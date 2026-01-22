@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint --fix",
     "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "shadcn:add": "npx shadcn@latest add && npm run lint:fix"
   },
   "engines": {
     "node": ">=24.11.1",
@@ -16,6 +17,7 @@
     "npm": "please-use-pnpm"
   },
   "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
