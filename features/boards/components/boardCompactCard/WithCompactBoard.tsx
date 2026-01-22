@@ -9,7 +9,8 @@ const WithCompactBoard = ({
   isActive: boolean;
 }) => {
   const onBoardClick = () => {};
-  const getBoardCardCount = (board: CompactBoard) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const getBoardCardCount = (_board: CompactBoard) => {
     return 5;
   };
   return (
