@@ -1,6 +1,6 @@
-import { ActivityLog, Attachment, Label, Priority } from "../types";
+import { ActivityLog, Attachment, Comment, Label, Priority } from "../types";
 
-export interface ListCard {
+export interface ListItemCard {
   id: string;
   title: string;
   description: string;
@@ -15,4 +15,14 @@ export interface ListCard {
   done: boolean;
   createdAt: string;
   updatedAt: string;
+}
+export interface List {
+  id: string;
+  title: string;
+  cards: ListItemCard[];
+  accentColor: string;
+  wipLimit?: number;
+  archived: boolean;
+  order: number;
+  createdAt: string;
 }

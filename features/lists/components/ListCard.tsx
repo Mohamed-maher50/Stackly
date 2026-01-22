@@ -1,135 +1,200 @@
-import { CheckCircle2, Circle, MessageCircle, Paperclip } from "lucide-react";
-import { motion } from "motion/react";
+import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
+import * as motion from "motion/react-client";
 
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence";
 
-import { PRIORITY_COLORS } from "../constants";
-import { ListCard } from "../types";
-
-interface CardItemProps {
-  card: ListCard;
-  index: number;
-  listId: string;
+import { List } from "../types";
+import ListCardItem from "./ListItemCard";
+export interface ListColumnProps {
+  list: List;
   boardId: string;
-  onDoneToggle?: (done: boolean) => void;
-  onClick?: () => void;
+  isCreatingCard: boolean;
+  newCardTitle: string;
+  isExpanded: boolean;
+  isEditingTitle: boolean;
+  editedTitle: string;
+  onCreateCardStart: () => void;
+  onCreateCardCancel: () => void;
+  onCreateCard: () => void;
+  onNewCardTitleChange: (title: string) => void;
+  onToggleExpand: () => void;
+  onEditTitleStart: () => void;
+  onSaveTitle: () => void;
+  onEditedTitleChange: (title: string) => void;
+  onArchiveList: () => void;
+  onDeleteList: () => void;
 }
 
-export default function CardItem({
-  card,
-  onDoneToggle,
-  onClick,
-}: CardItemProps) {
-  const priorityColor =
-    PRIORITY_COLORS[card.priority as keyof typeof PRIORITY_COLORS];
+export default function ListCard(props: ListColumnProps) {
+  const cardCount = props.list.cards.length;
 
-  const onDoneToggleHandler = onDoneToggle?.bind(null, !card.done);
-  const onClickHandler = onClick?.bind(null);
+  const completedCount = props.list.cards.filter((c) => c.done).length;
 
   return (
     <motion.div
       layout
-      whileHover={{ y: -2, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
-      whileTap={{ y: 0 }}
-      onClick={onClickHandler}
-      className={`bg-background rounded-lg p-3 border border-border cursor-pointer transition-all ${
-        card.done ? "opacity-60" : ""
-      }`}
+      className="w-72 shrink-0 bg-muted rounded-lg overflow-hidden flex flex-col max-h-full"
     >
-      <div className="space-y-2">
-        {/* Title and Done Button */}
-        <div className="flex items-start gap-2">
+      {/* Header */}
+      <div className={`${props.list.accentColor} p-4 border-b border-border`}>
+        <div className="flex items-center justify-between gap-2 mb-2">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onDoneToggleHandler}
-            className="shrink-0 mt-0.5"
+            // onClick={() => props.setIsExpanded(!props.isExpanded)}
+            className="shrink-0"
           >
-            {card.done ? (
-              <CheckCircle2 className="w-5 h-5 text-green-600" />
-            ) : (
-              <Circle className="w-5 h-5 text-muted-foreground hover:text-foreground" />
-            )}
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                props.isExpanded ? "rotate-0" : "-rotate-90"
+              }`}
+            />
           </motion.button>
-          <p
-            className={cn(
-              `text-sm font-medium flex-1`,
-              card.done
-                ? "line-through text-muted-foreground"
-                : "text-foreground",
-            )}
-          >
-            {card.title}
-          </p>
+
+          {props.isEditingTitle ? (
+            <input
+              type="text"
+              value={props.editedTitle}
+              onChange={(e) =>
+                props.onEditedTitleChange?.call(null, e.target.value)
+              }
+              onBlur={props.onEditTitleStart}
+              onKeyPress={(e) => e.key === "Enter" && props.onSaveTitle()}
+              autoFocus
+              className="flex-1 px-2 py-1 bg-background border border-border rounded text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          ) : (
+            <motion.button
+              whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
+              //   onClick={() =>props. setIsEditingTitle(true)}
+              className="flex-1 text-left px-2 py-1 rounded font-semibold text-sm"
+            >
+              {props.list.title}
+            </motion.button>
+          )}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <span className="text-lg">⋮</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+              //   onClick={() => archiveList(boardId, list.id)}
+              >
+                <Archive className="w-4 h-4 mr-2" />
+                Archive
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                // onClick={() => deleteList(boardId, list.id)}
+                className="text-destructive"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        {/* Description Preview */}
-        {card.description && (
-          <p className="text-xs text-muted-foreground line-clamp-2 ml-7">
-            {card.description}
-          </p>
-        )}
-
-        {/* Labels */}
-        {card.labels.length > 0 && (
-          <div className="flex gap-1 flex-wrap ml-7">
-            {card.labels.slice(0, 3).map((label) => (
-              <span
-                key={label.id}
-                className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground"
-              >
-                {label.name}
-              </span>
-            ))}
-            {card.labels.length > 3 && (
-              <span className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground">
-                +{card.labels.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Priority Badge */}
-        {card.priority !== "medium" && (
-          <div className="ml-7">
-            <span
-              className={cn(
-                `px-2 py-0.5 text-xs font-semibold rounded-full`,
-                priorityColor,
-              )}
+        {/* List Stats */}
+        <div className="text-xs text-muted-foreground">
+          {completedCount}/{cardCount} completed
+          {props.list.wipLimit && (
+            <div
+              className={
+                cardCount > props.list.wipLimit
+                  ? "text-destructive font-semibold"
+                  : ""
+              }
             >
-              {card.priority.toUpperCase()}
-            </span>
-          </div>
-        )}
-
-        {/* Meta Information */}
-        <div className="flex items-center gap-2 ml-7 text-xs text-muted-foreground">
-          {card.dueDate && (
-            <span className="flex items-center gap-1">
-              📅 {new Date(card.dueDate).toLocaleDateString()}
-            </span>
-          )}
-          {card.checklists.length > 0 && (
-            <span className="flex items-center gap-1">
-              ✓ {card.checklists.filter((c) => c.completed).length}/
-              {card.checklists.length}
-            </span>
-          )}
-          {card.comments.length > 0 && (
-            <span className="flex items-center gap-1">
-              <MessageCircle className="w-3 h-3" />
-              {card.comments.length}
-            </span>
-          )}
-          {card.attachments.length > 0 && (
-            <span className="flex items-center gap-1">
-              <Paperclip className="w-3 h-3" />
-              {card.attachments.length}
-            </span>
+              WIP Limit: {cardCount}/{props.list.wipLimit}
+            </div>
           )}
         </div>
       </div>
+
+      {/* Cards Container */}
+      {props.isExpanded && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="flex-1 overflow-y-auto p-3 space-y-2"
+        >
+          <WithClientAnimatedPresence>
+            {props.list.cards.map((card, index) => (
+              <motion.div
+                key={card.id}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ListCardItem
+                  card={card}
+                  index={index}
+                  listId={props.list.id}
+                  boardId={props.boardId}
+                />
+              </motion.div>
+            ))}
+          </WithClientAnimatedPresence>
+
+          {/* Add Card Button */}
+          {props.isCreatingCard ? (
+            <div className="bg-background rounded-lg p-3 space-y-2">
+              <input
+                type="text"
+                placeholder="Card title..."
+                value={props.newCardTitle}
+                // onChange={(e) => setNewCardTitle(e.target.value)}
+                // onKeyPress={(e) => e.key === "Enter" && handleCreateCard()}
+                autoFocus
+                className="w-full px-2 py-1 bg-card border border-border rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  // onClick={handleCreateCard}
+                  className="flex-1"
+                >
+                  Add
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  //   onClick={() => {
+                  //     setIsCreatingCard(false);
+                  //     setNewCardTitle("");
+                  //   }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <motion.button
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0 }}
+              //   onClick={() => setIsCreatingCard(true)}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg hover:bg-background transition-colors text-sm"
+            >
+              <Plus className="w-4 h-4" />
+              Add Card
+            </motion.button>
+          )}
+        </motion.div>
+      )}
     </motion.div>
   );
 }
