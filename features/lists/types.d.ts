@@ -15,11 +15,16 @@ export interface ListItemCard {
   done: boolean;
   createdAt: string;
   updatedAt: string;
+  listId: string;
 }
+
+/// will rename to Record
+export type Record = ListItemCard;
 export interface List {
   id: string;
   title: string;
-  cards: ListItemCard[];
+  boardId: string;
+  cards: string[];
   accentColor: string;
   wipLimit?: number;
   archived: boolean;

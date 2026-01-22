@@ -5,17 +5,19 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAppDispatch } from "@/lib/App.hooks";
+
+import { insertBoard } from "../boardSlice";
 
 // interface WithCreateBoardProps {}
 
 export default function WithCreateBoard() {
   const [isCreating, setIsCreating] = useState(false);
   const [boardTitle, setBoardTitle] = useState("");
-
+  const dispatch = useAppDispatch();
   const handleCreate = () => {
     if (boardTitle.trim()) {
-      // onSubmit(boardTitle.trim());
-
+      dispatch(insertBoard(boardTitle));
       setBoardTitle("");
       setIsCreating(false);
     }

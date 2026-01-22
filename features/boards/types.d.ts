@@ -5,7 +5,7 @@ export interface Board {
   id: string;
   title: string;
   description: string;
-  lists: List[];
+  lists: string[];
   color: BoardColor;
   visibility: BoardVisibility;
   archived: boolean;
@@ -17,6 +17,7 @@ export interface Board {
     overdueCards: number;
   };
 }
+
 export interface BoardColor {
   id: string;
   name: string;
