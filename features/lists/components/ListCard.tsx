@@ -12,6 +12,7 @@ import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence"
 
 import { List } from "../types";
 import ListCardItem from "./ListItemCard";
+
 export interface ListColumnProps {
   list: List;
   boardId: string;
