@@ -23,3 +23,4 @@ export interface BoardColor {
   bgGradient: string;
   accentColor: string;
 }
+export type CompactBoard = Pick<Board, "id" | "title">;
