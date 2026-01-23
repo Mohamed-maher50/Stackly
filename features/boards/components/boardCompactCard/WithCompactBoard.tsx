@@ -1,3 +1,7 @@
+import { useAppDispatch } from "@/lib/App.hooks";
+import { UpdateSection } from "@/lib/AppMainSlice";
+
+import { updateActiveBoard } from "../../boardSlice";
 import { CompactBoard } from "../../types";
 import CompactBoardCard from ".";
 
@@ -8,7 +12,11 @@ const WithCompactBoard = ({
   board: CompactBoard;
   isActive: boolean;
 }) => {
-  const onBoardClick = () => {};
+  const dispatch = useAppDispatch();
+  const onBoardClick = () => {
+    dispatch(updateActiveBoard(board.id));
+    dispatch(UpdateSection("lists"));
+  };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getBoardCardCount = (_board: CompactBoard) => {
     return 5;

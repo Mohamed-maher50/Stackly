@@ -8,12 +8,16 @@ import { initialBoard } from "./utils";
 
 export interface initialState {
   boards: Board[];
+  activeBoardIndex: number | null;
+  activeBoard: Board | null;
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: initialState = {
   status: "idle",
   boards: [mockBoard],
+  activeBoard: null,
+  activeBoardIndex: null,
 };
 export const boardSlice = createSlice({
   name: "boardStore",
@@ -47,6 +51,17 @@ export const boardSlice = createSlice({
         boardFields,
       );
     },
+    updateActiveBoard: (state, { payload }: PayloadAction<string>) => {
+      const boardIndex = state.boards.findIndex(
+        (board) => board.id === payload,
+      );
+      if (boardIndex < 0) {
+        state.activeBoardIndex = null;
+        state.activeBoard = null;
+      }
+      state.activeBoardIndex = boardIndex;
+      state.activeBoard = state.boards[boardIndex];
+    },
   },
   selectors: {
     findBoards: (state) => {
@@ -58,7 +73,8 @@ export const boardSlice = createSlice({
 export const { findBoards } = boardSlice.selectors;
 
 //----------------------------------------------- actions
-export const { archiveBoard, insertBoard, updateBoard } = boardSlice.actions;
+export const { archiveBoard, insertBoard, updateBoard, updateActiveBoard } =
+  boardSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default boardSlice.reducer;

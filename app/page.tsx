@@ -3,19 +3,23 @@
 import { useEffect } from "react";
 
 import WithBoardView from "@/features/boards/components/BoardsView/WithBoardView";
-import { archiveBoard } from "@/features/stores";
-import { useAppDispatch } from "@/lib/App.hooks";
+import WithListView from "@/features/lists/components/WithListView";
+import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
+import { getMain } from "@/lib/AppMainSlice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-
+  const mainContent = useAppSelector(getMain);
+  console.log(mainContent);
   useEffect(() => {
-    dispatch(archiveBoard("board-1"));
+    // dispatch(UpdateSection("content"));
   }, [dispatch]);
 
   return (
     <div className="">
-      <WithBoardView />
+      {mainContent == "boards" && <WithBoardView />}
+      {mainContent === "settings" && <>setting</>}
+      {mainContent === "lists" && <WithListView />}
     </div>
   );
 }

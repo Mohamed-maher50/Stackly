@@ -67,3 +67,17 @@ export const selectListsByBoardId = (boardId: string) =>
   createSelector([(state: RootState) => state.listsStore.lists], (listsState) =>
     listsState.filter((list) => list.boardId === boardId),
   );
+export const selectActiveBoardLists = createSelector(
+  [
+    (state: RootState) => {
+      return {
+        lists: state.listsStore.lists,
+        boardId: state.boardStore.activeBoard,
+      };
+    },
+  ],
+  (input) => {
+    if (!input.boardId) return [];
+    return input.lists.filter((list) => list.boardId === input.boardId?.id);
+  },
+);

@@ -3,6 +3,8 @@
 import { ArrowLeft, Menu, Settings } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/lib/App.hooks";
+import { UpdateSection } from "@/lib/AppMainSlice";
 
 import { SidebarTrigger } from "../ui/sidebar";
 
@@ -11,6 +13,7 @@ interface HeaderProps {
 }
 
 export default function AppNavbar({ currentPage }: HeaderProps) {
+  const dispatch = useAppDispatch();
   return (
     <header className="border-b border-border  bg-card h-16 w-full flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -50,7 +53,7 @@ export default function AppNavbar({ currentPage }: HeaderProps) {
           <Button
             variant="ghost"
             size="icon"
-            // onClick={onNavigateToSettings}
+            onClick={() => dispatch(UpdateSection("settings"))}
             className="hover:bg-muted"
             title="Settings"
           >
