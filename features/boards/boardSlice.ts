@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import { RootState } from "@/lib/App.store";
 
 import { mockBoard } from "./mocks/board.mock";
 import { Board } from "./types";
@@ -60,3 +62,33 @@ export const { archiveBoard, insertBoard, updateBoard } = boardSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default boardSlice.reducer;
+
+// ------------------------ custom memoized selectors
+const boardsInput = (state: RootState) => state.boardStore.boards;
+
+//
+export const archivedBoardSelector = createSelector([boardsInput], (boards) => {
+  return boards.filter((board) => board.archived);
+});
+export const activeBoardSelector = createSelector([boardsInput], (boards) => {
+  return boards.filter((board) => !board.archived);
+});
+export const normalizedBoardsSelector = createSelector(
+  [boardsInput],
+  (boards) => {
+    return boards.reduce<{
+      archived: Board[];
+      active: Board[];
+    }>(
+      (state, board) => {
+        if (board.archived) state.archived.push(board);
+        else state.active.push(board);
+        return state;
+      },
+      {
+        archived: [],
+        active: [],
+      },
+    );
+  },
+);

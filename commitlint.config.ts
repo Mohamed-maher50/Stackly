@@ -7,17 +7,17 @@ const commitlintConfig: UserConfig = {
       2,
       "always",
       [
-        "build",
-        "chore",
-        "ci",
-        "docs",
-        "feat",
-        "fix",
-        "perf",
-        "refactor",
-        "revert",
-        "style",
-        "test",
+        "build", //build: update vite and react dependencies
+        "chore", //chore: remove unused files
+        "ci", //ci: add node version to github actions
+        "docs", //docs: update installation steps in README
+        "feat", //feat: add drag and drop cards
+        "fix", //fix: prevent card duplication on refresh
+        "perf", //perf: optimize board selector memoization
+        "refactor", //refactor: simplify board reducer logic
+        "revert", //revert: revert "feat: add card filtering"
+        "style", //style: format board slice with prettier
+        "test", //test: add unit tests for board reducer
       ],
     ],
     "subject-case": [0], // disable enforcing subject case

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 
+import WithBoardView from "@/features/boards/components/BoardsView/WithBoardView";
 import { archiveBoard } from "@/features/stores";
 import { useAppDispatch } from "@/lib/App.hooks";
 
@@ -12,5 +13,9 @@ export default function Home() {
     dispatch(archiveBoard("board-1"));
   }, [dispatch]);
 
-  return <div className="p-20 w-20">hello</div>;
+  return (
+    <div className="">
+      <WithBoardView />
+    </div>
+  );
 }

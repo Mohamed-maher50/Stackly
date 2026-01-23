@@ -1,6 +1,12 @@
 // import { List } from "../lists/types";
 import { BoardVisibility } from "../types";
 
+export interface BoardStats {
+  totalCards: number;
+  completedCards: number;
+  overdueCards: number;
+}
+
 export interface Board {
   id: string;
   title: string;
@@ -11,11 +17,7 @@ export interface Board {
   archived: boolean;
   createdAt: string;
   updatedAt: string;
-  stats?: {
-    totalCards: number;
-    completedCards: number;
-    overdueCards: number;
-  };
+  stats?: BoardStats;
 }
 
 export interface BoardColor {
