@@ -34,9 +34,8 @@ export default function RootLayout({
       >
         <StoreProvider>
           <WithSidebar>
-            <div className="flex flex-col w-full  px-6">
+            <div className="flex flex-col w-full h-full  gap-2">
               <AppNavbar currentPage="boards" />
-
               {children}
             </div>
           </WithSidebar>

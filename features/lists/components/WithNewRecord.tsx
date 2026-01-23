@@ -10,7 +10,7 @@ const WithNewList = () => {
 
   const handleCreateCard = () => {
     if (newCardTitle.trim()) {
-      console.log("Creating card:", newCardTitle);
+      // console.log("Creating card:", newCardTitle);
       setNewCardTitle("");
       setIsCreatingCard(false);
     }

@@ -10,13 +10,12 @@ import { getMain } from "@/lib/AppMainSlice";
 export default function Home() {
   const dispatch = useAppDispatch();
   const mainContent = useAppSelector(getMain);
-  console.log(mainContent);
   useEffect(() => {
     // dispatch(UpdateSection("content"));
   }, [dispatch]);
 
   return (
-    <div className="">
+    <div className=" h-full ">
       {mainContent == "boards" && <WithBoardView />}
       {mainContent === "settings" && <>setting</>}
       {mainContent === "lists" && <WithListView />}

@@ -67,10 +67,11 @@ export const boardSlice = createSlice({
     findBoards: (state) => {
       return state.boards;
     },
+    currentBoard: (state) => state.activeBoard,
   },
 });
 //-------------------------------------- selectors
-export const { findBoards } = boardSlice.selectors;
+export const { findBoards, currentBoard } = boardSlice.selectors;
 
 //----------------------------------------------- actions
 export const { archiveBoard, insertBoard, updateBoard, updateActiveBoard } =

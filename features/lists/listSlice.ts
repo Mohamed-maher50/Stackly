@@ -4,6 +4,7 @@ import { RootState } from "@/lib/App.store";
 
 import { mockLists } from "./mocks/mockList.mock";
 import { IList, List } from "./types";
+import { getInitialList } from "./utils";
 
 export interface initialState {
   lists: IList[];
@@ -18,18 +19,24 @@ export const listsSlice = createSlice({
   name: "listsStore",
   initialState: initialState,
   reducers: {
-    insertBoard: (state, { payload }: PayloadAction<IList>) => {
-      state.lists.push(payload);
+    insertList: (
+      state,
+      { payload }: PayloadAction<{ boardId: string; title: string }>,
+    ) => {
+      state.lists.push({
+        ...getInitialList(payload.boardId),
+        title: payload.title,
+      });
     },
     ///--------------------------------------------- string is boardId
-    archiveBoard: (state, { payload }: PayloadAction<string>) => {
+    archiveList: (state, { payload }: PayloadAction<string>) => {
       state.lists = state.lists.map((board) => {
         if (board.id !== payload) return board;
         board.archived = true;
         return board;
       });
     },
-    updateBoard: (
+    updateList: (
       state,
       { payload }: PayloadAction<Partial<List> & { id: string }>,
     ) => {
@@ -55,7 +62,7 @@ export const listsSlice = createSlice({
 export const { findLists } = listsSlice.selectors;
 
 //----------------------------------------------- actions
-export const { archiveBoard, insertBoard, updateBoard } = listsSlice.actions;
+export const { archiveList, insertList, updateList } = listsSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default listsSlice.reducer;

@@ -10,13 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence";
 
-import { List } from "../types";
-import ListCardItem from "./ListItemCard";
-import WithNewList from "./WithNewList";
+import { IList } from "../types";
+import WithNewList from "./WithNewRecord";
 import WithRenameList from "./WithRenameList";
 
 export interface ListColumnProps {
-  list: List;
+  list: IList;
   boardId: string;
   isExpanded: boolean;
 }
@@ -47,7 +46,10 @@ export default function ListCard(props: ListColumnProps) {
             />
           </motion.button>
 
-          <WithRenameList initialTitle="sdfsdf" onTitleSave={() => {}} />
+          <WithRenameList
+            initialTitle={props.list.title}
+            onTitleSave={() => {}}
+          />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -99,7 +101,7 @@ export default function ListCard(props: ListColumnProps) {
           className="flex-1 overflow-y-auto p-3 space-y-2"
         >
           <WithClientAnimatedPresence>
-            {props.list.cards.map((card, index) => (
+            {/* {props.list.cards.map((card, index) => (
               <motion.div
                 key={card.id}
                 layout
@@ -115,7 +117,7 @@ export default function ListCard(props: ListColumnProps) {
                   boardId={props.boardId}
                 />
               </motion.div>
-            ))}
+            ))} */}
           </WithClientAnimatedPresence>
 
           {/* Add Card Button */}
