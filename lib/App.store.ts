@@ -5,11 +5,18 @@ import { listsSlice } from "@/features/lists/listSlice";
 import { RecordsSlice } from "@/features/records/recordSlice";
 import { boardSlice } from "@/features/stores";
 
+import { mainSlice } from "./AppMainSlice";
+
 // import { examSlice } from "./features/exam/ExamSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(boardSlice, listsSlice, RecordsSlice);
+const rootReducer = combineSlices(
+  boardSlice,
+  listsSlice,
+  RecordsSlice,
+  mainSlice,
+);
 // examSlice
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
