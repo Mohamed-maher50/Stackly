@@ -4,13 +4,11 @@ import * as motion from "motion/react-client";
 import { cn } from "@/lib/utils";
 
 import { PRIORITY_COLORS } from "../constants";
-import { ListItemCard } from "../types";
+import { IRecord } from "../types";
 
 interface CardItemProps {
-  card: ListItemCard;
+  card: IRecord;
   index: number;
-  listId: string;
-  boardId: string;
   onDoneToggle?: (done: boolean) => void;
   onClick?: () => void;
 }

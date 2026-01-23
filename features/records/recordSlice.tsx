@@ -56,7 +56,8 @@ export const RecordsSlice = createSlice({
 // export const {  } = RecordsSlice.selectors;
 
 //----------------------------------------------- actions
-export const { removeRecord, updateRecord } = RecordsSlice.actions;
+export const { removeRecord, updateRecord, insertRecord } =
+  RecordsSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default RecordsSlice.reducer;
@@ -64,8 +65,13 @@ export default RecordsSlice.reducer;
 /* =========================
    Derived selectors
 ========================= */
-export const selectListsByBoardId = (boardId: string) =>
-  createSelector(
-    [(state: RootState) => state.recordSlice.records],
-    (listsState) => listsState.filter((record) => record.id === boardId),
-  );
+export const selectListRecords = createSelector(
+  [
+    (state: RootState, listId: string) => ({
+      records: state.recordSlice.records,
+      listId,
+    }),
+  ],
+  (listsState) =>
+    listsState.records.filter((record) => record.listId === listsState.listId),
+);

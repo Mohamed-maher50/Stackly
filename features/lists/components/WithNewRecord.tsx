@@ -3,15 +3,22 @@ import * as motion from "motion/react-client";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { insertRecord } from "@/features/records/recordSlice";
+import { useAppDispatch } from "@/lib/App.hooks";
 
-const WithNewList = () => {
+const WithNewRecord = ({ listId }: { listId: string }) => {
   const [isCreatingCard, setIsCreatingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
-
+  const dispatch = useAppDispatch();
   const handleCreateCard = () => {
     if (newCardTitle.trim()) {
-      // console.log("Creating card:", newCardTitle);
       setNewCardTitle("");
+      dispatch(
+        insertRecord({
+          listId,
+          title: newCardTitle,
+        }),
+      );
       setIsCreatingCard(false);
     }
   };
@@ -69,4 +76,4 @@ const WithNewList = () => {
   );
 };
 
-export default WithNewList;
+export default WithNewRecord;

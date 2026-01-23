@@ -11,7 +11,8 @@ import {
 import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence";
 
 import { IList } from "../types";
-import WithNewList from "./WithNewRecord";
+import WithListRecords from "./WithListCards";
+import WithNewRecord from "./WithNewRecord";
 import WithRenameList from "./WithRenameList";
 
 export interface ListColumnProps {
@@ -22,9 +23,7 @@ export interface ListColumnProps {
 
 export default function ListCard(props: ListColumnProps) {
   const cardCount = props.list.cards.length;
-
   const completedCount = props.list.cards.length;
-
   return (
     <motion.div
       layout
@@ -101,27 +100,11 @@ export default function ListCard(props: ListColumnProps) {
           className="flex-1 overflow-y-auto p-3 space-y-2"
         >
           <WithClientAnimatedPresence>
-            {/* {props.list.cards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ListCardItem
-                  card={card}
-                  index={index}
-                  listId={props.list.id}
-                  boardId={props.boardId}
-                />
-              </motion.div>
-            ))} */}
+            <WithListRecords listId={props.list.id} />
           </WithClientAnimatedPresence>
 
           {/* Add Card Button */}
-          <WithNewList />
+          <WithNewRecord listId={props.list.id} />
         </motion.div>
       )}
     </motion.div>
