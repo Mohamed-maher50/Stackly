@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useAppDispatch } from "@/lib/App.hooks";
+import { UpdateSection } from "@/lib/AppMainSlice";
 
+import { updateActiveBoard } from "../../boardSlice";
 import { Board, BoardStats } from "../../types";
 import BoardCard from ".";
 
@@ -14,10 +16,11 @@ export default function WithBoardCard({
   board,
   stats,
 }: BoardCardContainerProps) {
-  const [isHovering, setIsHovering] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleCardClick = () => {
-    // onClick?.(board.id);
+    dispatch(updateActiveBoard(board.id));
+    dispatch(UpdateSection("lists"));
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -39,9 +42,6 @@ export default function WithBoardCard({
     <BoardCard
       board={board}
       stats={stats}
-      isHovering={isHovering}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
       onClick={handleCardClick}
       onDelete={handleDelete}
       onArchive={handleArchive}
