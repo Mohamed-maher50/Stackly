@@ -2,11 +2,11 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/lib/App.store";
 
-import { Record } from "../lists/types";
+import { IRecord } from "../lists/types";
 import { initialRecord } from "./utils";
 
 export interface initialState {
-  records: Record[];
+  records: IRecord[];
   status: "idle" | "loading" | "failed";
 }
 
@@ -37,11 +37,12 @@ export const RecordsSlice = createSlice({
     },
     updateRecord: (
       state,
-      { payload }: PayloadAction<Partial<Record> & { id: string }>,
+      { payload }: PayloadAction<Partial<IRecord> & { id: string }>,
     ) => {
       const boardIndex = state.records.findIndex(
         (record) => record.id === payload.id,
       );
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { ["id"]: _, ...recordFields } = payload;
       if (boardIndex < 0) return;
       state.records[boardIndex] = Object.assign(

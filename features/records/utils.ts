@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { Record } from "../lists/types";
+import { IRecord } from "../lists/types";
 
-export const initialRecord = (): Omit<Record, "title" | "listId"> => ({
+export const initialRecord = (): Omit<IRecord, "title" | "listId"> => ({
   id: uuidv4(),
   description: "",
   labels: [],

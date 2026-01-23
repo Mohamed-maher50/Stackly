@@ -37,6 +37,7 @@ export const boardSlice = createSlice({
       const boardIndex = state.boards.findIndex(
         (board) => board.id === payload.id,
       );
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { ["id"]: _, ...boardFields } = payload;
       if (boardIndex < 0) return;
       state.boards[boardIndex] = Object.assign(

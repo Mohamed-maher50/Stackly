@@ -2,12 +2,7 @@ import { ListColumnProps } from "../components/ListCard";
 
 export const dummyListColumnProps: ListColumnProps = {
   boardId: "board-1",
-  isCreatingCard: false,
-  newCardTitle: "",
   isExpanded: true,
-  isEditingTitle: false,
-  editedTitle: "Backlog",
-
   list: {
     id: "list-1",
     title: "Backlog",
@@ -66,15 +61,4 @@ export const dummyListColumnProps: ListColumnProps = {
       },
     ],
   },
-
-  onCreateCardStart: () => {},
-  onCreateCardCancel: () => {},
-  onCreateCard: () => {},
-  onNewCardTitleChange: () => {},
-  onToggleExpand: () => {},
-  onEditTitleStart: () => {},
-  onSaveTitle: () => {},
-  onEditedTitleChange: () => {},
-  onArchiveList: () => {},
-  onDeleteList: () => {},
 };

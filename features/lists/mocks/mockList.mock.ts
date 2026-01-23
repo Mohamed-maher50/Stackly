@@ -1,6 +1,6 @@
-import { List } from "../types";
+import { IList } from "../types";
 
-export const mockLists: List[] = [
+export const mockLists: IList[] = [
   {
     id: "list-1",
     title: "Todo",

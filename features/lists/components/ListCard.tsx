@@ -1,4 +1,4 @@
-import { Archive, ChevronDown, Plus, Trash2 } from "lucide-react";
+import { Archive, ChevronDown, Trash2 } from "lucide-react";
 import * as motion from "motion/react-client";
 
 import { Button } from "@/components/ui/button";
@@ -12,31 +12,19 @@ import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence"
 
 import { List } from "../types";
 import ListCardItem from "./ListItemCard";
+import WithNewList from "./WithNewList";
+import WithRenameList from "./WithRenameList";
 
 export interface ListColumnProps {
   list: List;
   boardId: string;
-  isCreatingCard: boolean;
-  newCardTitle: string;
   isExpanded: boolean;
-  isEditingTitle: boolean;
-  editedTitle: string;
-  onCreateCardStart: () => void;
-  onCreateCardCancel: () => void;
-  onCreateCard: () => void;
-  onNewCardTitleChange: (title: string) => void;
-  onToggleExpand: () => void;
-  onEditTitleStart: () => void;
-  onSaveTitle: () => void;
-  onEditedTitleChange: (title: string) => void;
-  onArchiveList: () => void;
-  onDeleteList: () => void;
 }
 
 export default function ListCard(props: ListColumnProps) {
   const cardCount = props.list.cards.length;
 
-  const completedCount = props.list.cards.filter((c) => c.done).length;
+  const completedCount = props.list.cards.length;
 
   return (
     <motion.div
@@ -59,27 +47,7 @@ export default function ListCard(props: ListColumnProps) {
             />
           </motion.button>
 
-          {props.isEditingTitle ? (
-            <input
-              type="text"
-              value={props.editedTitle}
-              onChange={(e) =>
-                props.onEditedTitleChange?.call(null, e.target.value)
-              }
-              onBlur={props.onEditTitleStart}
-              onKeyPress={(e) => e.key === "Enter" && props.onSaveTitle()}
-              autoFocus
-              className="flex-1 px-2 py-1 bg-background border border-border rounded text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          ) : (
-            <motion.button
-              whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
-              //   onClick={() =>props. setIsEditingTitle(true)}
-              className="flex-1 text-left px-2 py-1 rounded font-semibold text-sm"
-            >
-              {props.list.title}
-            </motion.button>
-          )}
+          <WithRenameList initialTitle="sdfsdf" onTitleSave={() => {}} />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -151,49 +119,7 @@ export default function ListCard(props: ListColumnProps) {
           </WithClientAnimatedPresence>
 
           {/* Add Card Button */}
-          {props.isCreatingCard ? (
-            <div className="bg-background rounded-lg p-3 space-y-2">
-              <input
-                type="text"
-                placeholder="Card title..."
-                value={props.newCardTitle}
-                // onChange={(e) => setNewCardTitle(e.target.value)}
-                // onKeyPress={(e) => e.key === "Enter" && handleCreateCard()}
-                autoFocus
-                className="w-full px-2 py-1 bg-card border border-border rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  // onClick={handleCreateCard}
-                  className="flex-1"
-                >
-                  Add
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  //   onClick={() => {
-                  //     setIsCreatingCard(false);
-                  //     setNewCardTitle("");
-                  //   }}
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <motion.button
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
-              //   onClick={() => setIsCreatingCard(true)}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg hover:bg-background transition-colors text-sm"
-            >
-              <Plus className="w-4 h-4" />
-              Add Card
-            </motion.button>
-          )}
+          <WithNewList />
         </motion.div>
       )}
     </motion.div>

@@ -1,4 +1,4 @@
-import { List } from "../lists/types";
+// import { List } from "../lists/types";
 import { BoardVisibility } from "../types";
 
 export interface Board {
