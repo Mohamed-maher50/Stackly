@@ -2,7 +2,6 @@
 
 import { MoreVertical } from "lucide-react";
 import * as motion from "motion/react-client";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,53 +22,38 @@ interface BoardStats {
 interface BoardCardProps {
   board: Board;
   stats: BoardStats;
-  onDelete: (boardId: string) => void;
-  onArchive: (boardId: string) => void;
-  onToggleVisibility: (
-    boardId: string,
-    currentVisibility: "private" | "public",
-  ) => void;
-  onClick?: (boardId: string) => void;
+  isHovering: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onClick: () => void;
+  onDelete: (e: React.MouseEvent) => void;
+  onArchive: (e: React.MouseEvent) => void;
+  onToggleVisibility: (e: React.MouseEvent) => void;
 }
 
 export default function BoardCard({
   board,
   stats,
+  isHovering,
+  onMouseEnter,
+  onMouseLeave,
+  onClick,
   onDelete,
   onArchive,
   onToggleVisibility,
-  onClick,
 }: BoardCardProps) {
-  const [isHovering, setIsHovering] = useState(false);
-
-  const backgroundClass = `bg-gradient-to-br ${board.color.bgGradient}`;
-
-  const handleCardClick = () => {
-    onClick?.(board.id);
-  };
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDelete(board.id);
-  };
-
-  const handleArchive = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onArchive(board.id);
-  };
-
-  const handleToggleVisibility = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onToggleVisibility(board.id, board.visibility);
-  };
+  const backgroundClass = `bg-gradient-to-br`;
 
   return (
     <motion.div
       whileHover={{ y: -4 }}
+      style={{
+        background: board.color.bgGradient,
+      }}
       className={`${backgroundClass} rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer`}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-      onClick={handleCardClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
     >
       {/* Background gradient overlay */}
       <div className="p-6 text-white h-48 flex flex-col justify-between relative overflow-hidden">
@@ -107,16 +91,16 @@ export default function BoardCard({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={handleToggleVisibility}>
+                  <DropdownMenuItem onClick={onToggleVisibility}>
                     {board.visibility === "private"
                       ? "Make Public"
                       : "Make Private"}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleArchive}>
+                  <DropdownMenuItem onClick={onArchive}>
                     Archive
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={handleDelete}
+                    onClick={onDelete}
                     className="text-destructive"
                   >
                     Delete
