@@ -1,5 +1,6 @@
 import { CheckCircle2, Circle, MessageCircle, Paperclip } from "lucide-react";
 import * as motion from "motion/react-client";
+import type { MouseEvent } from "react";
 import { memo } from "react";
 
 import { cn } from "@/lib/utils";
@@ -21,7 +22,10 @@ export default memo(function ListCardItem({
   const priorityColor =
     PRIORITY_COLORS[card.priority as keyof typeof PRIORITY_COLORS];
 
-  const onDoneToggleHandler = onDoneToggle?.bind(null, !card.done);
+  const onDoneToggleHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDoneToggle?.call(null, !card.done);
+  };
   const onClickHandler = onClick?.bind(null);
 
   return (

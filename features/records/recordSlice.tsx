@@ -9,7 +9,8 @@ import {
 import { RootState } from "@/lib/App.store";
 
 import { IRecord } from "../lists/types";
-import { initialRecord } from "./utils";
+import { IComment } from "../types";
+import { generateCommit, initialRecord } from "./utils";
 
 export interface initialState {
   records: IRecord[];
@@ -65,13 +66,32 @@ export const RecordsSlice = createSlice({
         changes: recordFields,
       });
     },
+    insertCommit: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        record: IRecord;
+        comment: Pick<IComment, "text">;
+      }>,
+    ) => {
+      recordsAdapter.updateOne(state, {
+        id: payload.record.id,
+        changes: {
+          comments: [
+            ...payload.record.comments,
+            generateCommit(payload.comment.text),
+          ],
+        },
+      });
+    },
   },
 });
 //-------------------------------------- selectors
 // export const {  } = RecordsSlice.selectors;
 
 //----------------------------------------------- actions
-export const { removeRecord, updateRecord, insertRecord } =
+export const { removeRecord, updateRecord, insertRecord, insertCommit } =
   RecordsSlice.actions;
 
 //---------------------------------------------------------------------------- reducers

@@ -8,6 +8,14 @@ export interface Label {
   color: string;
 }
 
+export interface IComment {
+  id: string;
+  user: string;
+  text: string;
+  timestamp: string;
+  avatar?: string;
+}
+
 export interface Attachment {
   id: string;
   name: string;
