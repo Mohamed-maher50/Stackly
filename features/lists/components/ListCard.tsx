@@ -21,6 +21,7 @@ export interface ListColumnProps {
   isExpanded: boolean;
   onArchiveList: (listId: string) => void;
   onDeleteList: (listId: string) => void;
+  onExpended: (status: boolean) => void;
 }
 
 export default function ListCard(props: ListColumnProps) {
@@ -37,7 +38,7 @@ export default function ListCard(props: ListColumnProps) {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            // onClick={() => props.setIsExpanded(!props.isExpanded)}
+            onClick={() => props.onExpended(!props.isExpanded)}
             className="shrink-0"
           >
             <ChevronDown
@@ -48,8 +49,8 @@ export default function ListCard(props: ListColumnProps) {
           </motion.button>
 
           <WithRenameList
+            listId={props.list.id}
             initialTitle={props.list.title}
-            onTitleSave={() => {}}
           />
 
           <DropdownMenu>

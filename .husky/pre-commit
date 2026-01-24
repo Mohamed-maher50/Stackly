@@ -1,3 +1,2 @@
 pnpm prettier
-pnpm eslint --fix
 pnpm lint

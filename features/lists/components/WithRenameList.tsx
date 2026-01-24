@@ -1,18 +1,29 @@
 import * as motion from "motion/react-client";
 import { useState } from "react";
 
+import { useAppDispatch } from "@/lib/App.hooks";
+
+import { updateList } from "../listSlice";
+
 interface WithRenameListProps {
   initialTitle: string;
-  onTitleSave?: (newTitle: string) => void;
+  listId: string;
 }
 
-const WithRenameList = ({ initialTitle, onTitleSave }: WithRenameListProps) => {
+const WithRenameList = ({ initialTitle, listId }: WithRenameListProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState(initialTitle);
 
+  const dispatch = useAppDispatch();
+
   const handleSaveTitle = () => {
     if (editedTitle.trim()) {
-      onTitleSave?.(editedTitle.trim());
+      dispatch(
+        updateList({
+          id: listId,
+          title: editedTitle,
+        }),
+      );
       setIsEditingTitle(false);
     } else {
       setEditedTitle(initialTitle);

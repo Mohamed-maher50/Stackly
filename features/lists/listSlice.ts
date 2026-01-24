@@ -58,13 +58,14 @@ export const listsSlice = createSlice({
         },
       });
     },
-    updateLIst: (
+    updateList: (
       state,
       { payload }: PayloadAction<Partial<IList> & { id: string }>,
     ) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { ["id"]: _, ...boardFields } = payload;
-      listsAdapter.updateOne(state, { id: payload.id, changes: boardFields });
+      const { id, ...listFields } = payload;
+      console.log(id);
+      console.log(listFields);
+      listsAdapter.updateOne(state, { id, changes: listFields });
     },
     deleteList: (state, { payload }: PayloadAction<string>) => {
       listsAdapter.removeOne(state, payload);
@@ -75,7 +76,8 @@ export const listsSlice = createSlice({
 // export const { findLists } = listsSlice.selectors;
 
 //----------------------------------------------- actions
-export const { insertList, archiveList, deleteList } = listsSlice.actions;
+export const { insertList, archiveList, deleteList, updateList } =
+  listsSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default listsSlice.reducer;

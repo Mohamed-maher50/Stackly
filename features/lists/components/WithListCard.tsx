@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useAppDispatch } from "@/lib/App.hooks";
 
 import { archiveList, deleteList } from "../listSlice";
@@ -9,19 +11,18 @@ interface WithListCardProps {
 }
 const WithListCard = ({ list }: WithListCardProps) => {
   const dispatch = useAppDispatch();
-  const onArchiveList = (listId: string) => {
-    dispatch(archiveList(listId));
-  };
-  const onDeleteList = (listId: string) => {
-    dispatch(deleteList(listId));
-  };
+  const [isExpanded, setIsExpanded] = useState(true);
+  const onArchiveList = (listId: string) => dispatch(archiveList(listId));
+  const onDeleteList = (listId: string) => dispatch(deleteList(listId));
+
   return (
     <ListCard
       list={list}
-      boardId={"list.boardId"}
-      isExpanded
+      boardId={list.boardId}
+      isExpanded={isExpanded}
       onArchiveList={onArchiveList}
       onDeleteList={onDeleteList}
+      onExpended={setIsExpanded}
     />
   );
 };
