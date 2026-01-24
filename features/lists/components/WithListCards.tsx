@@ -3,22 +3,23 @@ import * as motion from "motion/react-client";
 import { selectListRecords } from "@/features/records/recordSlice";
 import { useAppSelector } from "@/lib/App.hooks";
 
-import ListCardItem from "./ListItemCard";
+import WithListRecord from "./WithListRecord";
 
 export default function WithListRecords({ listId }: { listId: string }) {
-  const cards = useAppSelector((state) => selectListRecords(state, listId));
+  const records = useAppSelector((state) => selectListRecords(state, listId));
+
   return (
     <>
-      {cards.map((card, index) => (
+      {records.map((record) => (
         <motion.div
-          key={card.id}
+          key={record.id}
           layout
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
         >
-          <ListCardItem card={card} index={index} />
+          <WithListRecord record={record} />
         </motion.div>
       ))}
     </>

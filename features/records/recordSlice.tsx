@@ -1,4 +1,10 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+  EntityState,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
 import { RootState } from "@/lib/App.store";
 
@@ -7,48 +13,57 @@ import { initialRecord } from "./utils";
 
 export interface initialState {
   records: IRecord[];
-  status: "idle" | "loading" | "failed";
+  // status: "idle" | "loading" | "failed";
 }
 
-const initialState: initialState = {
-  status: "idle",
-  records: [],
-};
+const recordsAdapter = createEntityAdapter<IRecord>();
+// State  indexes
+interface ListsState extends EntityState<IRecord, string> {
+  // Index: listId -> recordIds[]
+  byListId: Record<string, string[]>;
+}
+const initialState: ListsState = recordsAdapter.getInitialState({
+  byListId: {},
+});
+
 export const RecordsSlice = createSlice({
   name: "recordSlice",
-  initialState: initialState,
+  initialState,
   reducers: {
     // --------------------------------------- payload title
     insertRecord: (
       state,
-      { payload }: PayloadAction<{ title: string; listId: string }>,
+      {
+        payload: { listId, title },
+      }: PayloadAction<{ title: string; listId: string }>,
     ) => {
-      state.records.push({
-        ...initialRecord(),
-        ...payload,
-      });
+      const newRecord: IRecord = { ...initialRecord(), title, listId };
+      recordsAdapter.addOne(state, newRecord);
+      //  create list where not exist
+      if (!state.byListId[listId]) state.byListId[listId] = [];
+      // there are list  and record not pushed before then insert
+      if (!state.byListId[listId].includes(newRecord.id))
+        state.byListId[listId].push(newRecord.id);
     },
     ///--------------------------------------------- string is recordId
-    removeRecord: (state, { payload }: PayloadAction<string>) => {
-      state.records = state.records.map((board) => {
-        if (board.id !== payload) return board;
-        return board;
-      });
+    removeRecord: (state, { payload }: PayloadAction<IRecord>) => {
+      recordsAdapter.removeOne(state, payload.id);
+      const list = state.byListId[payload.listId] || [];
+      if (list) {
+        state.byListId[payload.listId] = list.filter(
+          (recordId) => recordId != payload.id,
+        );
+      }
     },
     updateRecord: (
       state,
       { payload }: PayloadAction<Partial<IRecord> & { id: string }>,
     ) => {
-      const boardIndex = state.records.findIndex(
-        (record) => record.id === payload.id,
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { ["id"]: _, ...recordFields } = payload;
-      if (boardIndex < 0) return;
-      state.records[boardIndex] = Object.assign(
-        state.records[boardIndex],
-        recordFields,
-      );
+      const { id, ...recordFields } = payload;
+      recordsAdapter.updateOne(state, {
+        id,
+        changes: recordFields,
+      });
     },
   },
 });
@@ -67,11 +82,13 @@ export default RecordsSlice.reducer;
 ========================= */
 export const selectListRecords = createSelector(
   [
+    (state: RootState) => state,
     (state: RootState, listId: string) => ({
-      records: state.recordSlice.records,
-      listId,
+      recordsIds: state.recordSlice.byListId[listId] || [],
     }),
   ],
-  (listsState) =>
-    listsState.records.filter((record) => record.listId === listsState.listId),
+  (state, listsState) =>
+    listsState.recordsIds.map(
+      (recordId) => state.recordSlice.entities[recordId],
+    ),
 );

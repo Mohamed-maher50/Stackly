@@ -1,5 +1,6 @@
 import { CheckCircle2, Circle, MessageCircle, Paperclip } from "lucide-react";
 import * as motion from "motion/react-client";
+import { memo } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -8,12 +9,11 @@ import { IRecord } from "../types";
 
 interface CardItemProps {
   card: IRecord;
-  index: number;
   onDoneToggle?: (done: boolean) => void;
   onClick?: () => void;
 }
 
-export default function ListCardItem({
+export default memo(function ListCardItem({
   card,
   onDoneToggle,
   onClick,
@@ -130,4 +130,4 @@ export default function ListCardItem({
       </div>
     </motion.div>
   );
-}
+});

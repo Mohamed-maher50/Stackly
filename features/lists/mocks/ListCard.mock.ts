@@ -1,4 +1,4 @@
-import { ListColumnProps } from "../components/ListCard";
+// import { ListColumnProps } from "../components/ListCard";
 
 // export const dummyListColumnProps: ListColumnProps = {
 //   boardId: "board-1",
