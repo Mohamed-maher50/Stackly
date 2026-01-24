@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 
+import WithSettings from "@/components/settings/WithSettings";
 import WithBoardView from "@/features/boards/components/BoardsView/WithBoardView";
 import WithListView from "@/features/lists/components/WithListView";
 import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
@@ -17,7 +18,7 @@ export default function Home() {
   return (
     <div className=" h-full ">
       {mainContent == "boards" && <WithBoardView />}
-      {mainContent === "settings" && <>setting</>}
+      {mainContent === "settings" && <WithSettings />}
       {mainContent === "lists" && <WithListView />}
     </div>
   );

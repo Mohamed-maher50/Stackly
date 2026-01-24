@@ -86,9 +86,14 @@ export const RecordsSlice = createSlice({
       });
     },
   },
+  selectors: {
+    recordCount: (state) => {
+      return state.ids.length;
+    },
+  },
 });
 //-------------------------------------- selectors
-// export const {  } = RecordsSlice.selectors;
+export const { recordCount } = RecordsSlice.selectors;
 
 //----------------------------------------------- actions
 export const { removeRecord, updateRecord, insertRecord, insertCommit } =
