@@ -19,6 +19,8 @@ export interface ListColumnProps {
   list: IList;
   boardId: string;
   isExpanded: boolean;
+  onArchiveList: (listId: string) => void;
+  onDeleteList: (listId: string) => void;
 }
 
 export default function ListCard(props: ListColumnProps) {
@@ -58,13 +60,13 @@ export default function ListCard(props: ListColumnProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-              //   onClick={() => archiveList(boardId, list.id)}
+                onClick={() => props.onArchiveList(props.list.id)}
               >
                 <Archive className="w-4 h-4 mr-2" />
                 Archive
               </DropdownMenuItem>
               <DropdownMenuItem
-                // onClick={() => deleteList(boardId, list.id)}
+                onClick={() => props.onDeleteList(props.list.id)}
                 className="text-destructive"
               >
                 <Trash2 className="w-4 h-4 mr-2" />

@@ -1,10 +1,15 @@
+import { currentBoard } from "@/features/stores";
 import { useAppSelector } from "@/lib/App.hooks";
 
-import { selectActiveBoardLists } from "../listSlice";
+import { selectListsByBoardId } from "../listSlice";
+import { IList } from "../types";
 import ListsView from "./ListsView";
 
 const WithListView = () => {
-  const lists = useAppSelector(selectActiveBoardLists);
+  const board = useAppSelector(currentBoard);
+  const lists: IList[] = useAppSelector(
+    board ? selectListsByBoardId(board.id) : () => [],
+  );
   return <ListsView lists={lists} />;
 };
 
