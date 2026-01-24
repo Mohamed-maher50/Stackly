@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
 import AppNavbar from "@/components/Navbar";
 import WithSidebar from "@/components/Sidebar/WithSidebar";
@@ -28,18 +29,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="light" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StoreProvider>
-          <WithSidebar>
-            <div className="flex flex-col w-full h-full  gap-2">
-              <AppNavbar currentPage="boards" />
-              {children}
-            </div>
-          </WithSidebar>
-        </StoreProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <StoreProvider>
+            <WithSidebar>
+              <div className="flex flex-col w-full h-full  gap-2">
+                <AppNavbar currentPage="boards" />
+                {children}
+              </div>
+            </WithSidebar>
+          </StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
