@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import WithClientAnimatedPresence from "@/components/WithClientAnimatedPresence";
+import { cn } from "@/lib/utils";
 
 import { IList } from "../types";
 import WithListRecords from "./WithListCards";
@@ -33,7 +34,9 @@ export default function ListCard(props: ListColumnProps) {
       className="w-72 shrink-0 bg-muted rounded-lg overflow-hidden flex flex-col max-h-full"
     >
       {/* Header */}
-      <div className={`${props.list.accentColor} p-4 border-b border-border`}>
+      <div
+        className={cn(` p-4 border-b border-border`, props.list.accentColor)}
+      >
         <div className="flex items-center justify-between gap-2 mb-2">
           <motion.button
             whileHover={{ scale: 1.1 }}

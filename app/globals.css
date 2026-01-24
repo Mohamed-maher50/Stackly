@@ -1,9 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+@source inline('{dark:,}bg-{zinc,neutral,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,900}');
 @custom-variant dark (&:is(.dark *));
 
-/* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
   --color-background: var(--background);
