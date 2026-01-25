@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { insertRecord } from "@/features/records/recordSlice";
+import { initialRecord } from "@/features/records/utils";
 import { useAppDispatch } from "@/lib/App.hooks";
 
 const WithNewRecord = ({ listId }: { listId: string }) => {
@@ -15,6 +16,7 @@ const WithNewRecord = ({ listId }: { listId: string }) => {
       setNewCardTitle("");
       dispatch(
         insertRecord({
+          ...initialRecord(),
           listId,
           title: newCardTitle,
         }),

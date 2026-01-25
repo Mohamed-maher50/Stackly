@@ -1,4 +1,4 @@
-import type { Action, AnyAction, Reducer, ThunkAction } from "@reduxjs/toolkit";
+import type { Action, Reducer, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import { listsSlice } from "@/features/lists/listSlice";
@@ -8,6 +8,20 @@ import { boardSlice } from "@/features/stores";
 import { mainSlice } from "./AppMainSlice";
 
 // import { examSlice } from "./features/exam/ExamSlice";
+// export const listenerMiddleware = createListenerMiddleware();
+
+// listenerMiddleware.startListening({
+//   actionCreator: updateCompleted,
+//   effect: async (action, listenerApi) => {
+//     listenerApi.dispatch(
+//       updateList({
+//         id: action.payload.listId,
+//         isCompleted: action.payload.done,
+//       }),
+//     );
+//     listenerApi.cancelActiveListeners();
+//   },
+// });
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.

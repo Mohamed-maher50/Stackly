@@ -12,8 +12,11 @@ const WithListRecord = ({ record }: { record: IRecord }) => {
   const dispatch = useAppDispatch();
   const onDoneToggle = useCallback(
     (status: boolean) => {
-      dispatch(updateRecord({ id: record.id, done: status }));
+      dispatch(
+        updateRecord({ id: record.id, done: status, listId: record.listId }),
+      );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch, record.id],
   );
 

@@ -11,7 +11,7 @@ export const getInitialList = (boardId: string): Omit<IList, "title"> => {
     accentColor: AccentColors(),
     archived: false,
     boardId,
-
+    completedTasks: 0,
     cards: [],
     createdAt: new Date().toISOString(),
     order: 0,

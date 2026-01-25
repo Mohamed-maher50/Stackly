@@ -10,7 +10,7 @@ import { RootState } from "@/lib/App.store";
 
 import { IRecord } from "../lists/types";
 import { IComment } from "../types";
-import { generateCommit, initialRecord } from "./utils";
+import { generateCommit } from "./utils";
 
 export interface initialState {
   records: IRecord[];
@@ -32,19 +32,13 @@ export const RecordsSlice = createSlice({
   initialState,
   reducers: {
     // --------------------------------------- payload title
-    insertRecord: (
-      state,
-      {
-        payload: { listId, title },
-      }: PayloadAction<{ title: string; listId: string }>,
-    ) => {
-      const newRecord: IRecord = { ...initialRecord(), title, listId };
-      recordsAdapter.addOne(state, newRecord);
+    insertRecord: (state, { payload }: PayloadAction<IRecord>) => {
+      recordsAdapter.addOne(state, payload);
       //  create list where not exist
-      if (!state.byListId[listId]) state.byListId[listId] = [];
+      if (!state.byListId[payload.listId]) state.byListId[payload.listId] = [];
       // there are list  and record not pushed before then insert
-      if (!state.byListId[listId].includes(newRecord.id))
-        state.byListId[listId].push(newRecord.id);
+      if (!state.byListId[payload.listId].includes(payload.id))
+        state.byListId[payload.listId].push(payload.id);
     },
     ///--------------------------------------------- string is recordId
     removeRecord: (state, { payload }: PayloadAction<IRecord>) => {
@@ -58,7 +52,9 @@ export const RecordsSlice = createSlice({
     },
     updateRecord: (
       state,
-      { payload }: PayloadAction<Partial<IRecord> & { id: string }>,
+      {
+        payload,
+      }: PayloadAction<Partial<IRecord> & { id: string; listId: string }>,
     ) => {
       const { id, ...recordFields } = payload;
       recordsAdapter.updateOne(state, {
@@ -86,6 +82,7 @@ export const RecordsSlice = createSlice({
       });
     },
   },
+
   selectors: {
     recordCount: (state) => {
       return state.ids.length;
@@ -105,13 +102,13 @@ export default RecordsSlice.reducer;
 /* =========================
    Derived selectors
 ========================= */
+
+const state = (state: RootState) => state;
+const recordIds = (state: RootState, listId: string) => ({
+  recordsIds: state.recordSlice.byListId[listId] || [],
+});
 export const selectListRecords = createSelector(
-  [
-    (state: RootState) => state,
-    (state: RootState, listId: string) => ({
-      recordsIds: state.recordSlice.byListId[listId] || [],
-    }),
-  ],
+  [state, recordIds],
   (state, listsState) =>
     listsState.recordsIds.map(
       (recordId) => state.recordSlice.entities[recordId],

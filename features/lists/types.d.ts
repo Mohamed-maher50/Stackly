@@ -46,6 +46,5 @@ export interface List {
 }
 
 export interface IList extends List {
-  cards: string[];
   boardId: string;
 }

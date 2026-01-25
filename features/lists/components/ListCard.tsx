@@ -1,5 +1,6 @@
 import { Archive, ChevronDown, Trash2 } from "lucide-react";
 import * as motion from "motion/react-client";
+import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +28,9 @@ export interface ListColumnProps {
 
 export default function ListCard(props: ListColumnProps) {
   const cardCount = props.list.cards.length;
-  const completedCount = props.list.cards.length;
+  const completedCount = useMemo(() => {
+    return props.list.cards.reduce((state, c) => (state += +c.done), 0);
+  }, [props.list.cards]);
   return (
     <motion.div
       layout
