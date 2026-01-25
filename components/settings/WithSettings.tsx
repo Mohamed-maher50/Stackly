@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Theme } from "@/features";
 import { recordCount } from "@/features/records/recordSlice";
 import { normalizedBoardsSelector } from "@/features/stores";
-import { useAppSelector } from "@/lib/App.hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
 
 import { SettingsView } from ".";
 
@@ -17,6 +17,7 @@ export default function WithSettings() {
   const numberOfRecords = useAppSelector(recordCount);
   const { setTheme, theme } = useTheme();
 
+  const dispatch = useAppDispatch();
   return (
     <SettingsView
       theme={theme as Theme}
@@ -30,7 +31,13 @@ export default function WithSettings() {
       }}
       onSave={() => {}}
       onDiscard={() => setHasChanges(false)}
-      onReset={() => {}}
+      onReset={() => {
+        const result = confirm("are you sure you need rest app");
+        if (!result) return;
+        dispatch({
+          type: "RESET_ALL_STATE",
+        });
+      }}
     />
   );
 }

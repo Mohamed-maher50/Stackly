@@ -1,4 +1,4 @@
-import type { Action, ThunkAction } from "@reduxjs/toolkit";
+import type { Action, AnyAction, Reducer, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import { listsSlice } from "@/features/lists/listSlice";
@@ -11,15 +11,26 @@ import { mainSlice } from "./AppMainSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(
+const combineReducers = combineSlices(
   boardSlice,
   listsSlice,
   RecordsSlice,
   mainSlice,
 );
+
+const rootReducer: Reducer<ReturnType<typeof combineReducers>, Action> = (
+  state,
+  action,
+) => {
+  if (action.type === "RESET_ALL_STATE") {
+    state = undefined; // Reset to initial state
+  }
+  return combineReducers(state, action);
+};
+
 // examSlice
 // Infer the `RootState` type from the root reducer
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof combineReducers>;
 
 // `makeStore` encapsulates the store configuration to allow
 // creating unique store instances, which is particularly important for
