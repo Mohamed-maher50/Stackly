@@ -70,12 +70,7 @@ export const listsSlice = createSlice({
       }: PayloadAction<Partial<IList> & { id: string; isCompleted?: boolean }>,
     ) => {
       const { id, ...listFields } = payload;
-      console.log("here");
-      const list = state.entities[id];
-      if (listFields.isCompleted) {
-        listFields.completedTasks = list.completedTasks + 1;
-      } else if (listFields.isCompleted === false)
-        listFields.completedTasks = list.completedTasks - 1;
+
       listsAdapter.updateOne(state, {
         id,
         changes: listFields,
