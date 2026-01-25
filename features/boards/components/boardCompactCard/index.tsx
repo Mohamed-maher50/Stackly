@@ -28,7 +28,7 @@ export default function CompactBoardCard({
     >
       <div className="truncate font-medium text-sm">{board.title}</div>
       <div className="text-xs text-muted-foreground truncate">
-        {cardCount} cards
+        {cardCount} Lists
       </div>
     </motion.button>
   );
