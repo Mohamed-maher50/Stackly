@@ -5,8 +5,8 @@ import { memo } from "react";
 
 import { cn } from "@/lib/utils";
 
-import { PRIORITY_COLORS } from "../constants";
-import { IRecord } from "../types";
+import { PRIORITY_COLORS } from "../../constants";
+import { IRecord } from "../../types";
 
 interface CardItemProps {
   card: IRecord;
@@ -14,7 +14,7 @@ interface CardItemProps {
   onClick?: () => void;
 }
 
-export default memo(function ListCardItem({
+export default memo(function RecordList({
   card,
   onDoneToggle,
   onClick,

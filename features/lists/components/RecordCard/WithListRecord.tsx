@@ -3,9 +3,9 @@ import { useCallback, useState } from "react";
 import { updateRecord } from "@/features/records/recordSlice";
 import { useAppDispatch } from "@/lib/App.hooks";
 
-import { IRecord } from "../types";
-import ListCardItem from "./ListItemCard";
-import WithRecordDetailModal from "./RecordDetailModel/WithRecordDetailModal";
+import { IRecord } from "../../types";
+import WithRecordDetailModal from "../RecordDetailModel/WithRecordDetailModal";
+import RecordList from ".";
 
 const WithListRecord = ({ record }: { record: IRecord }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -22,7 +22,7 @@ const WithListRecord = ({ record }: { record: IRecord }) => {
 
   return (
     <>
-      <ListCardItem
+      <RecordList
         card={record}
         onDoneToggle={onDoneToggle}
         onClick={() => setShowDetails(true)}

@@ -3,7 +3,7 @@ import * as motion from "motion/react-client";
 import { selectListRecords } from "@/features/records/recordSlice";
 import { useAppSelector } from "@/lib/App.hooks";
 
-import WithListRecord from "./WithListRecord";
+import WithListRecord from "./RecordCard/WithListRecord";
 
 export default function WithListRecords({ listId }: { listId: string }) {
   const records = useAppSelector((state) => selectListRecords(state, listId));

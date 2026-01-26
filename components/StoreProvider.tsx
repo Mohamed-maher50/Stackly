@@ -1,6 +1,5 @@
 "use client";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { LoaderIcon } from "lucide-react";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
