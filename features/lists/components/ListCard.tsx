@@ -86,7 +86,7 @@ export default function ListCard(props: ListColumnProps) {
         {/* List Stats */}
         <div className="text-xs text-muted-foreground">
           {completedCount}/{cardCount} completed
-          {props.list.wipLimit && (
+          {/* {props.list.wipLimit && (
             <div
               className={
                 cardCount > props.list.wipLimit
@@ -96,7 +96,7 @@ export default function ListCard(props: ListColumnProps) {
             >
               WIP Limit: {cardCount}/{props.list.wipLimit}
             </div>
-          )}
+          )} */}
         </div>
       </div>
 

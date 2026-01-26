@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
 import { SettingsView } from ".";
 
 export default function WithSettings() {
-  //   const [dragPreference, setDragPreference] = useState(settings.dragPreference);
   const [hasChanges, setHasChanges] = useState(false);
   const boards = useAppSelector(normalizedBoardsSelector);
   const numberOfRecords = useAppSelector(recordCount);
@@ -37,6 +36,7 @@ export default function WithSettings() {
         dispatch({
           type: "RESET_ALL_STATE",
         });
+        localStorage.removeItem("persist:root");
       }}
     />
   );

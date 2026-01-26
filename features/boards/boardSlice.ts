@@ -2,7 +2,6 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/lib/App.store";
 
-import { mockBoard } from "./mocks/board.mock";
 import { Board } from "./types";
 import { initialBoard } from "./utils";
 
@@ -15,7 +14,7 @@ export interface initialState {
 
 const initialState: initialState = {
   status: "idle",
-  boards: [mockBoard],
+  boards: [],
   activeBoard: null,
   activeBoardIndex: null,
 };
@@ -67,6 +66,7 @@ export const boardSlice = createSlice({
       state.boards = state.boards.filter((b) => b.id != payload.id);
     },
   },
+
   selectors: {
     findBoards: (state) => {
       return state.boards;

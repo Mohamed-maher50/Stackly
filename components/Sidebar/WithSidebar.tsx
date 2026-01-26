@@ -14,9 +14,7 @@ const WithSidebar: FC<PropsWithChildren> = ({ children }) => {
       <SidebarProvider>
         <Sidebar activeBoardId="" boards={boards} currentPage="1" />
         <SidebarInset className="overflow-hidden">
-          <div className="flex-1 flex flex-col mx-auto p-6 w-full">
-            {children}
-          </div>
+          <div className="flex-1 flex flex-col mx-auto  w-full">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </div>

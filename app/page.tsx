@@ -13,13 +13,13 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const mainContent = useAppSelector(getMain);
   const sf = useBoardLists();
-  const s = useAppSelector((state) => sf(state, "maher"));
+  // const s = useAppSelector((state) => sf(state, "maher"));
   useEffect(() => {
     // dispatch(UpdateSection("content"));
   }, [dispatch]);
 
   return (
-    <div className=" h-full ">
+    <div className=" h-full p-2 ">
       {mainContent == "boards" && <WithBoardView />}
       {mainContent === "settings" && <WithSettings />}
       {mainContent === "lists" && <WithListView />}
