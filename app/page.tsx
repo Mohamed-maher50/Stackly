@@ -13,6 +13,7 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const mainContent = useAppSelector(getMain);
   const sf = useBoardLists();
+
   // const s = useAppSelector((state) => sf(state, "maher"));
   useEffect(() => {
     // dispatch(UpdateSection("content"));

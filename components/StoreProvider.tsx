@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
+import RootLoading from "@/app/loading";
 import { persistor, store } from "@/lib/App.store";
 
 export default function StoreProvider({
@@ -21,7 +22,7 @@ export default function StoreProvider({
 
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<LoaderIcon />}>
+      <PersistGate persistor={persistor} loading={<RootLoading />}>
         {children}
       </PersistGate>
     </Provider>
