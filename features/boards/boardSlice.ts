@@ -29,10 +29,11 @@ export const boardSlice = createSlice({
       state.boards.push(newBoard);
     },
     ///--------------------------------------------- string is boardId
-    archiveBoard: (state, { payload }: PayloadAction<string>) => {
+    toggleArchiveBoard: (state, { payload }: PayloadAction<string>) => {
       state.boards = state.boards.map((board) => {
         if (board.id !== payload) return board;
-        board.archived = true;
+        if (board.archived) board.archived = false;
+        else board.archived = true;
         return board;
       });
     },
@@ -62,6 +63,9 @@ export const boardSlice = createSlice({
       state.activeBoardIndex = boardIndex;
       state.activeBoard = state.boards[boardIndex];
     },
+    removeBoard: (state, { payload }: PayloadAction<Board>) => {
+      state.boards = state.boards.filter((b) => b.id != payload.id);
+    },
   },
   selectors: {
     findBoards: (state) => {
@@ -74,8 +78,13 @@ export const boardSlice = createSlice({
 export const { findBoards, currentBoard } = boardSlice.selectors;
 
 //----------------------------------------------- actions
-export const { archiveBoard, insertBoard, updateBoard, updateActiveBoard } =
-  boardSlice.actions;
+export const {
+  toggleArchiveBoard,
+  insertBoard,
+  updateBoard,
+  updateActiveBoard,
+  removeBoard,
+} = boardSlice.actions;
 
 //---------------------------------------------------------------------------- reducers
 export default boardSlice.reducer;

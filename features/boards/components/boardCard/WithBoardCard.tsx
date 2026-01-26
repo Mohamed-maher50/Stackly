@@ -1,9 +1,15 @@
 "use client";
 
+import { BoardVisibility } from "@/features/types";
 import { useAppDispatch } from "@/lib/App.hooks";
 import { UpdateSection } from "@/lib/AppMainSlice";
 
-import { updateActiveBoard } from "../../boardSlice";
+import {
+  removeBoard,
+  toggleArchiveBoard,
+  updateActiveBoard,
+  updateBoard,
+} from "../../boardSlice";
 import { Board, BoardStats } from "../../types";
 import BoardCard from ".";
 
@@ -23,19 +29,15 @@ export default function WithBoardCard({
     dispatch(UpdateSection("lists"));
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // onDelete(board.id);
-  };
+  const handleDelete = () => dispatch(removeBoard(board));
 
-  const handleArchive = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // onArchive(board.id);
-  };
+  const handleArchive = () => dispatch(toggleArchiveBoard(board.id));
 
   const handleToggleVisibility = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // onToggleVisibility(board.id, board.visibility);
+    const visibility: BoardVisibility =
+      board.visibility === "public" ? "private" : "public";
+    dispatch(updateBoard({ ...board, visibility }));
   };
 
   return (

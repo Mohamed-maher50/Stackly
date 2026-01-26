@@ -38,12 +38,6 @@ export default function BoardCard({
   onArchive,
   onToggleVisibility,
 }: BoardCardProps) {
-  const [isHovering, setIsHovering] = useState(false);
-
-  const onMouseEnter = () => setIsHovering(true);
-
-  const onMouseLeave = () => setIsHovering(false);
-
   const backgroundClass = `bg-gradient-to-br`;
 
   return (
@@ -52,9 +46,7 @@ export default function BoardCard({
       style={{
         background: board.color.bgGradient,
       }}
-      className={`${backgroundClass} rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer`}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      className={`${backgroundClass} rounded-lg group overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer`}
       onClick={onClick}
     >
       {/* Background gradient overlay */}
@@ -76,18 +68,17 @@ export default function BoardCard({
             )}
           </div>
 
-          {isHovering && (
+          <DropdownMenu>
             <motion.div
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <DropdownMenu>
+              <>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-white hover:bg-white/20 h-8 w-8"
-                    onClick={(e) => e.stopPropagation()}
+                    className="text-white   hover:bg-white/20 h-8 w-8"
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
@@ -99,7 +90,7 @@ export default function BoardCard({
                       : "Make Private"}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={onArchive}>
-                    Archive
+                    {board.archived ? "Unarchive" : "Archive"}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={onDelete}
@@ -108,9 +99,9 @@ export default function BoardCard({
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </>
             </motion.div>
-          )}
+          </DropdownMenu>
         </div>
       </div>
     </motion.div>

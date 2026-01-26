@@ -3,8 +3,8 @@
 import { ArrowLeft, Menu, Settings } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/lib/App.hooks";
-import { UpdateSection } from "@/lib/AppMainSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
+import { getMain, UpdateSection } from "@/lib/AppMainSlice";
 
 import { SidebarTrigger } from "../ui/sidebar";
 
@@ -14,6 +14,8 @@ interface HeaderProps {
 
 export default function AppNavbar({ currentPage }: HeaderProps) {
   const dispatch = useAppDispatch();
+  const mainContent = useAppSelector(getMain);
+  console.log(mainContent);
   return (
     <header className="border-b border-border  bg-card h-16 w-full flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -23,11 +25,11 @@ export default function AppNavbar({ currentPage }: HeaderProps) {
           </Button>
         </SidebarTrigger>
 
-        {currentPage === "board-detail" && (
+        {mainContent !== "boards" && (
           <Button
             variant="ghost"
             size="sm"
-            // onClick={onNavigateToBoards}
+            onClick={() => dispatch(UpdateSection("boards"))}
             className="gap-2 hover:bg-muted"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -35,21 +37,11 @@ export default function AppNavbar({ currentPage }: HeaderProps) {
           </Button>
         )}
 
-        <div>
-          {currentPage === "boards" && (
-            <h1 className="text-xl font-bold">My Boards</h1>
-          )}
-          {/* {currentPage === "board-detail" && currentBoard && (
-            <h1 className="text-xl font-bold">{currentBoard.title}</h1>
-          )} */}
-          {currentPage === "settings" && (
-            <h1 className="text-xl font-bold">Settings</h1>
-          )}
-        </div>
+        <h1 className="text-xl font-bold capitalize">{mainContent}</h1>
       </div>
 
       <div className="flex ml-auto items-center gap-2">
-        {currentPage !== "settings" && (
+        {mainContent !== "settings" && (
           <Button
             variant="ghost"
             size="icon"
