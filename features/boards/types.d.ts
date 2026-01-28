@@ -22,7 +22,6 @@ export interface Board {
 
 export interface BoardColor {
   id: string;
-  name: string;
   bgGradient: string;
   accentColor: string;
 }
