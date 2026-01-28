@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ====== Boards ======
+model Board {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  lists       List[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  visibility  BoardVisibility @default(PUBLIC)
+  archived    Boolean         @default(false)
+  color       BoardColor?
+  stats       BoardStats?
+}
+
+type BoardStats {
+  totalCards     Int @default(0)
+  completedCards Int @default(0)
+  overdueCards   Int @default(0)
+}
+
+type BoardColor {
+  id          String
+  bgGradient  String
+  accentColor String
+}
+
+enum BoardVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ====== Lists ======
+model List {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  accentColor String
+  wipLimit    Int?
+  archived    Boolean  @default(false)
+  order       Int
+  boardId     String   @db.ObjectId
+  board       Board    @relation(fields: [boardId], references: [id])
+  cards       Card[]
+  createdAt   DateTime @default(now())
+}
+
+// ====== Cards ======
+model Card {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  labels      Label[]
+  dueDate     DateTime?
+  priority    String
+  attachments Attachment[]
+  checklists  ChecklistItem[]
+  comments    Comment[]
+  activityLog ActivityLog[]
+  assignedTo  String?
+  done        Boolean         @default(false)
+  listId      String          @db.ObjectId
+  list        List            @relation(fields: [listId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+// ====== Embedded Types ======
+type Label {
+  id    String
+  name  String
+  color String
+}
+
+type Attachment {
+  id   String
+  url  String
+  name String
+}
+
+type ChecklistItem {
+  id    String
+  title String
+  done  Boolean
+}
+
+type Comment {
+  id        String
+  authorId  String
+  content   String
+  createdAt DateTime
+}
+
+type ActivityLog {
+  id        String
+  action    String
+  userId    String
+  createdAt DateTime
+}
