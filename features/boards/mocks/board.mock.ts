@@ -7,7 +7,6 @@ export const mockBoard: Board = {
   lists: ["list-1", "list-2", "list-3"],
   color: {
     id: "color-blue",
-    name: "Ocean Blue",
     bgGradient: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
     accentColor: "#1e3c72",
   },
