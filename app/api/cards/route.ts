@@ -1,30 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest } from "next/server";
 
-import { DEFAULT_BOARD_SLATS } from "@/features/boards/constant.boards";
-import { createBoardSchema } from "@/features/boards/zod.boards.schema";
+import { createCardSchema } from "@/features/records/zod.cards.schema";
 import { handleApiError, successResponse } from "@/lib/api.response";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validatedData = createBoardSchema.parse(body);
-    const boardPayload = Object.assign(validatedData, DEFAULT_BOARD_SLATS);
-    const board = await prisma.board.create({
-      data: boardPayload,
+    const validatedData = createCardSchema.parse(body);
+    const cardPayload = Object.assign(validatedData);
+    const card = await prisma.card.create({
+      data: cardPayload,
     });
 
-    return successResponse(board, 201);
+    return successResponse(card, 201);
   } catch (error) {
     return handleApiError(error);
   }
 }
 export async function GET(_request: NextRequest) {
   try {
-    const board = await prisma.board.findMany();
+    const card = await prisma.card.findMany();
 
-    return successResponse(board, 201);
+    return successResponse(card, 201);
   } catch (error) {
     return handleApiError(error);
   }

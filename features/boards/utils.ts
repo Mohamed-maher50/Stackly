@@ -31,7 +31,6 @@ export const initialBoard = (): Omit<Board, "title"> => ({
       hueRange: [200, 280],
     }),
     accentColor: modernColors[Math.floor(modernColors.length * Math.random())],
-    name: "sdfsfd",
     id: uuidv4(),
   },
   description: "",
