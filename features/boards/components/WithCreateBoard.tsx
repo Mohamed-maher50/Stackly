@@ -7,17 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAppDispatch } from "@/lib/App.hooks";
 
-import { insertBoard } from "../boardSlice";
+import { createBoardThunk } from "../store/thunks.api";
 
 // interface WithCreateBoardProps {}
 
 export default function WithCreateBoard() {
   const [isCreating, setIsCreating] = useState(false);
   const [boardTitle, setBoardTitle] = useState("");
+
   const dispatch = useAppDispatch();
   const handleCreate = () => {
     if (boardTitle.trim()) {
-      dispatch(insertBoard(boardTitle));
+      dispatch(createBoardThunk({ title: boardTitle }));
       setBoardTitle("");
       setIsCreating(false);
     }

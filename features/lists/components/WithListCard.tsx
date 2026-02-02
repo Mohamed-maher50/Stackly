@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useAppDispatch } from "@/lib/App.hooks";
 
-import { archiveList, deleteList } from "../listSlice";
+import { deleteListThunk, updateListThunk } from "../store/thunks.api";
 import { IList } from "../types";
 import ListCard from "./ListCard";
 
@@ -12,8 +12,17 @@ interface WithListCardProps {
 const WithListCard = ({ list }: WithListCardProps) => {
   const dispatch = useAppDispatch();
   const [isExpanded, setIsExpanded] = useState(true);
-  const onArchiveList = (listId: string) => dispatch(archiveList(listId));
-  const onDeleteList = (listId: string) => dispatch(deleteList(listId));
+  const onArchiveList = (listId: string) =>
+    dispatch(
+      updateListThunk({
+        id: listId,
+        boardId: list.boardId,
+        archived: true,
+      }),
+    );
+  const onDeleteList = () => {
+    dispatch(deleteListThunk(list));
+  };
 
   return (
     <ListCard

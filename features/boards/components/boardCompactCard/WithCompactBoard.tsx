@@ -1,16 +1,16 @@
 import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
 import { UpdateSection } from "@/lib/AppMainSlice";
 
-import { updateActiveBoard } from "../../boardSlice";
 import useBoardLists from "../../hooks/useBoardLists";
-import { CompactBoard } from "../../types";
+import { updateActiveBoard } from "../../store/slice";
+import { IBoard } from "../../types";
 import CompactBoardCard from ".";
 
 const WithCompactBoard = ({
   board,
   isActive,
 }: {
-  board: CompactBoard;
+  board: IBoard;
   isActive: boolean;
 }) => {
   const dispatch = useAppDispatch();

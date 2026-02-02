@@ -10,8 +10,13 @@ export async function DELETE(
 ) {
   const { boardId } = await params;
   try {
-    const board = await prisma.board.delete({ where: { id: boardId } });
-    return successResponse(board, 404);
+    const board = await prisma.board.update({
+      where: { id: boardId },
+      data: {
+        isDeleted: true,
+      },
+    });
+    return successResponse(board, 200);
   } catch (error) {
     return handleApiError(error);
   }

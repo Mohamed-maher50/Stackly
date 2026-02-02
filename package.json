@@ -4,15 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "start:dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix",
     "prettier": "prettier --write .",
     "prepare": "husky",
-    "shadcn:add": "npx shadcn@latest add && npm run lint:fix",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "postinstall": "prisma generate",
+    "prisma:update": "pnpm dlx prisma generate"
   },
   "engines": {
     "node": ">=24.11.1",
@@ -27,6 +28,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@reduxjs/toolkit": "^2.11.2",
+    "axios": "^1.13.4",
     "bson": "^7.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

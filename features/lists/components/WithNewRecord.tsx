@@ -3,11 +3,12 @@ import * as motion from "motion/react-client";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { insertRecord } from "@/features/records/recordSlice";
-import { initialRecord } from "@/features/records/utils";
+import { createCardThunk } from "@/features/cards/store/thunks.api";
 import { useAppDispatch } from "@/lib/App.hooks";
 
-const WithNewRecord = ({ listId }: { listId: string }) => {
+import { IList } from "../types";
+
+const WithNewRecord = ({ list }: { list: IList }) => {
   const [isCreatingCard, setIsCreatingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
   const dispatch = useAppDispatch();
@@ -15,10 +16,10 @@ const WithNewRecord = ({ listId }: { listId: string }) => {
     if (newCardTitle.trim()) {
       setNewCardTitle("");
       dispatch(
-        insertRecord({
-          ...initialRecord(),
-          listId,
+        createCardThunk({
           title: newCardTitle,
+          listId: list.id,
+          boardId: list.boardId,
         }),
       );
       setIsCreatingCard(false);

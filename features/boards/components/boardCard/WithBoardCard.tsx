@@ -1,49 +1,49 @@
 "use client";
 
-import { BoardVisibility } from "@/features/types";
+import { MouseEvent } from "react";
+
+import { Board } from "@/generated/prisma/client";
 import { useAppDispatch } from "@/lib/App.hooks";
 import { UpdateSection } from "@/lib/AppMainSlice";
 
-import {
-  removeBoard,
-  toggleArchiveBoard,
-  updateActiveBoard,
-  updateBoard,
-} from "../../boardSlice";
-import { Board, BoardStats } from "../../types";
+import { toggleArchiveBoard, updateActiveBoard } from "../../store/slice";
+import { deleteBoardThunk, updateBoardThunk } from "../../store/thunks.api";
+import { IBoard } from "../../types";
 import BoardCard from ".";
 
 interface BoardCardContainerProps {
-  board: Board;
-  stats: BoardStats;
+  board: IBoard;
 }
 
-export default function WithBoardCard({
-  board,
-  stats,
-}: BoardCardContainerProps) {
+export default function WithBoardCard({ board }: BoardCardContainerProps) {
   const dispatch = useAppDispatch();
 
-  const handleCardClick = () => {
+  const handleCardClick = (e: MouseEvent) => {
+    e.stopPropagation();
     dispatch(updateActiveBoard(board.id));
     dispatch(UpdateSection("lists"));
   };
 
-  const handleDelete = () => dispatch(removeBoard(board));
+  const handleDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    dispatch(deleteBoardThunk(board));
+  };
 
-  const handleArchive = () => dispatch(toggleArchiveBoard(board.id));
+  const handleArchive = (e: MouseEvent) => {
+    e.stopPropagation();
+    dispatch(toggleArchiveBoard(board.id));
+  };
 
   const handleToggleVisibility = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const visibility: BoardVisibility =
-      board.visibility === "public" ? "private" : "public";
-    dispatch(updateBoard({ ...board, visibility }));
+    const visibility: Board["visibility"] =
+      board.visibility === "PUBLIC" ? "PRIVATE" : "PUBLIC";
+    dispatch(updateBoardThunk({ visibility }));
   };
 
   return (
     <BoardCard
       board={board}
-      stats={stats}
       onClick={handleCardClick}
       onDelete={handleDelete}
       onArchive={handleArchive}

@@ -1,13 +1,17 @@
+import { ObjectId } from "bson";
 import { z } from "zod";
 
 export const createBoardSchema = z.object({
-  title: z.string().min(3).max(100),
+  title: z.string().min(1).max(100),
   description: z.string().optional(),
-  visibility: z.enum(["PRIVATE", "PUBLIC"]).default("PUBLIC"),
+  visibility: z.enum(["PRIVATE", "PUBLIC"]).default("PUBLIC").optional(),
 });
 
 // that the main schema
 export const boardSchema = z.object({
+  id: z.string().refine((val) => ObjectId.isValid(val), {
+    message: "Invalid MongoDB ObjectId field:id",
+  }),
   title: z.string().min(3).max(100),
   description: z.string(),
   visibility: z.enum(["PRIVATE", "PUBLIC"]),
@@ -18,4 +22,6 @@ export const boardSchema = z.object({
     accentColor: z.string(),
   }),
 });
-export const updateBoardSchema = boardSchema.partial();
+
+export const deleteBoardSchema = boardSchema.pick({ id: true });
+export const updateBoardSchema = boardSchema.omit({ id: true }).partial();

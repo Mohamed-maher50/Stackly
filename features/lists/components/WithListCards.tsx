@@ -1,16 +1,12 @@
 import * as motion from "motion/react-client";
 
-import { selectListRecords } from "@/features/records/recordSlice";
-import { useAppSelector } from "@/lib/App.hooks";
+import WithListRecord from "../../cards/components/RecordCard/WithListRecord";
+import { IList } from "../types";
 
-import WithListRecord from "./RecordCard/WithListRecord";
-
-export default function WithListRecords({ listId }: { listId: string }) {
-  const records = useAppSelector((state) => selectListRecords(state, listId));
-
+export default function WithListRecords({ list }: { list: IList }) {
   return (
     <>
-      {records.map((record) => (
+      {list.cards.map((record) => (
         <motion.div
           key={record.id}
           layout
@@ -19,7 +15,7 @@ export default function WithListRecords({ listId }: { listId: string }) {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
         >
-          <WithListRecord record={record} />
+          <WithListRecord card={record} />
         </motion.div>
       ))}
     </>

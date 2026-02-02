@@ -1,21 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import {
-  insertCommit,
-  removeRecord,
-  updateRecord,
-} from "@/features/records/recordSlice";
-import { updateActivityLogs } from "@/features/records/utils";
-import { Priority } from "@/features/types";
+  addCommentThunk,
+  deleteCardThunk,
+  updateCardThunk,
+} from "@/features/cards/store/thunks.api";
+import { ICard } from "@/features/cards/types";
 import { useAppDispatch } from "@/lib/App.hooks";
 
-import { IRecord } from "../../types";
-import { RecordDetailModal } from ".";
+import RecordDetailModal from ".";
 
 interface WithRecordDetailModalProps {
-  card: IRecord;
+  card: ICard;
   onClose: () => void;
 }
 
@@ -31,9 +29,8 @@ export default function WithRecordDetailModal({
   const [editedDescription, setEditedDescription] = useState(
     card.description ?? "",
   );
-
   const [newComment, setNewComment] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState<Priority>(
+  const [selectedPriority, setSelectedPriority] = useState<ICard["priority"]>(
     card.priority,
   );
   const [showActivityLog, setShowActivityLog] = useState(false);
@@ -43,94 +40,86 @@ export default function WithRecordDetailModal({
   const saveTitle = () => {
     if (editedTitle.trim() && editedTitle !== card.title) {
       dispatch(
-        updateRecord({
+        updateCardThunk({
           ...card,
           title: editedTitle,
-          activityLog: updateActivityLogs("title", card.activityLog, {
-            oldValue: card.title,
-            value: editedTitle,
-          }),
         }),
       );
     }
     setIsEditingTitle(false);
   };
 
-  const saveDescription = () => {
+  const saveDescription = useCallback(() => {
     if (editedDescription !== card.description) {
       dispatch(
-        updateRecord({
+        updateCardThunk({
           ...card,
           description: editedDescription,
-          activityLog: updateActivityLogs("description", card.activityLog, {
-            oldValue: card.description,
-            value: editedDescription,
-          }),
         }),
       );
     }
     setIsEditingDescription(false);
-  };
+  }, [card, dispatch, editedDescription]);
 
-  const addComment = () => {
+  const addComment = useCallback(() => {
     if (!newComment.trim()) return;
 
     dispatch(
-      insertCommit({
-        comment: {
-          text: newComment,
-        },
-        record: card,
+      addCommentThunk({
+        ...card,
+        text: newComment,
+        cardId: card.id,
       }),
     );
+
     dispatch(
-      updateRecord({
+      updateCardThunk({
         ...card,
-        activityLog: updateActivityLogs("comment", card.activityLog, {
-          oldValue: "",
-          value: newComment,
-        }),
       }),
     );
     setNewComment("");
-  };
+  }, [card, dispatch, newComment]);
 
-  const changePriority = (priority: Priority) => {
-    setSelectedPriority(priority);
+  const changePriority = useCallback(
+    (priority: ICard["priority"]) => {
+      setSelectedPriority(priority);
 
+      dispatch(
+        updateCardThunk({
+          ...card,
+          priority,
+        }),
+      );
+    },
+    [card, dispatch],
+  );
+
+  const changeDueDate = useCallback(
+    (isoDate: Date) => {
+      dispatch(
+        updateCardThunk({
+          ...card,
+          dueDate: isoDate,
+        }),
+      );
+    },
+    [card, dispatch],
+  );
+
+  const toggleDone = useCallback(() => {
     dispatch(
-      updateRecord({
-        ...card,
-        priority,
-      }),
-    );
-  };
-
-  const changeDueDate = (isoDate: string) => {
-    dispatch(
-      updateRecord({
-        ...card,
-        dueDate: isoDate,
-      }),
-    );
-  };
-
-  const toggleDone = () => {
-    dispatch(
-      updateRecord({
+      updateCardThunk({
         ...card,
         done: true,
       }),
     );
-    // updateCard(boardId, listId, card.id, { done: !card.done });
-  };
+  }, [card, dispatch]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (!confirm("Are you sure you want to delete this card?")) return;
-    // deleteCard(boardId, listId, card.id);
-    dispatch(removeRecord(card));
+    dispatch(deleteCardThunk(card));
     onClose();
-  };
+  }, [card, dispatch, onClose]);
 
   /* ------------------ Render ------------------ */
 

@@ -1,8 +1,15 @@
 import easyMeshGradient, { linear } from "easy-mesh-gradient";
 import { v4 as uuidv4 } from "uuid";
 
-import { Board } from "./types";
-
+export const generateBoardColor = () => ({
+  bgGradient: easyMeshGradient({
+    easing: linear,
+    pointCount: 5,
+    hueRange: [200, 280],
+  }),
+  accentColor: modernColors[Math.floor(modernColors.length * Math.random())],
+  id: uuidv4(),
+});
 const modernColors = [
   "#FF6B6B",
   "#FFD93D",
@@ -17,26 +24,26 @@ const modernColors = [
   "#F72585",
   "#7209B7",
 ];
-export const initialBoard = (): Omit<Board, "title"> => ({
-  id: uuidv4(),
-  archived: false,
-  createdAt: new Date().toISOString(),
-  lists: [],
-  visibility: "public",
-  updatedAt: new Date().toISOString(),
-  color: {
-    bgGradient: easyMeshGradient({
-      easing: linear,
-      pointCount: 5,
-      hueRange: [200, 280],
-    }),
-    accentColor: modernColors[Math.floor(modernColors.length * Math.random())],
-    id: uuidv4(),
-  },
-  description: "",
-  stats: {
-    totalCards: 0,
-    completedCards: 0,
-    overdueCards: 0,
-  },
-});
+// export const initialBoard = (): Omit<IBoard, "title"> => ({
+//   id: uuidv4(),
+//   archived: false,
+//   createdAt: new Date(),
+//   lists: [],
+//   visibility: "public",
+//   updatedAt: new Date().toISOString(),
+//   color: {
+//     bgGradient: easyMeshGradient({
+//       easing: linear,
+//       pointCount: 5,
+//       hueRange: [200, 280],
+//     }),
+//     accentColor: modernColors[Math.floor(modernColors.length * Math.random())],
+//     id: uuidv4(),
+//   },
+//   description: "",
+//   stats: {
+//     totalCards: 0,
+//     completedCards: 0,
+//     overdueCards: 0,
+//   },
+// });

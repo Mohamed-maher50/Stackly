@@ -12,43 +12,26 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage
 
-import { listsSlice } from "@/features/lists/listSlice";
-import { RecordsSlice } from "@/features/records/recordSlice";
+import { cardsSlice } from "@/features/cards/store/slice";
+import { listsSlice } from "@/features/lists/store/slice";
 import { boardSlice } from "@/features/stores";
 
 import { mainSlice } from "./AppMainSlice";
 // import { examSlice } from "./features/exam/ExamSlice";
 // export const listenerMiddleware = createListenerMiddleware();
 
-// listenerMiddleware.startListening({
-//   actionCreator: updateCompleted,
-//   effect: async (action, listenerApi) => {
-//     listenerApi.dispatch(
-//       updateList({
-//         id: action.payload.listId,
-//         isCompleted: action.payload.done,
-//       }),
-//     );
-//     listenerApi.cancelActiveListeners();
-//   },
-// });
-
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const combineReducers = combineSlices(
   boardSlice,
   listsSlice,
-  RecordsSlice,
+  cardsSlice,
   mainSlice,
 );
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  // يمكنك تحديد أي slices تحفظها
-  // whitelist: ["list", "record"], // فقط list و record
-  // أو تستثني slices معينة
-  // blacklist: ['someSlice']
 };
 const rootReducer: Reducer<ReturnType<typeof combineReducers>, Action> = (
   state,

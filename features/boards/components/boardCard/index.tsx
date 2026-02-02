@@ -11,19 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Board } from "../../types";
-
-interface BoardStats {
-  totalCards: number;
-  completedCards: number;
-  overdueCards: number;
-}
+import { IBoard } from "../../types";
 
 interface BoardCardProps {
-  board: Board;
-  stats: BoardStats;
+  board: IBoard;
 
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   onDelete: (e: React.MouseEvent) => void;
   onArchive: (e: React.MouseEvent) => void;
   onToggleVisibility: (e: React.MouseEvent) => void;
@@ -31,14 +24,13 @@ interface BoardCardProps {
 
 export default function BoardCard({
   board,
-  stats,
   onClick,
   onDelete,
   onArchive,
   onToggleVisibility,
 }: BoardCardProps) {
   const backgroundClass = `bg-gradient-to-br`;
-
+  console.log(board);
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -60,11 +52,8 @@ export default function BoardCard({
 
         <div className="relative z-10 flex items-center justify-between">
           <div className="text-xs text-white/90 space-y-1">
-            <div>📋 {stats.totalCards} cards</div>
-            <div>✓ {stats.completedCards} done</div>
-            {stats.overdueCards > 0 && (
-              <div>⏰ {stats.overdueCards} overdue</div>
-            )}
+            <div>📋 {board._count.lists} lists</div>
+            <div>✏️ {board.total_cards} cards</div>
           </div>
 
           <DropdownMenu>
@@ -84,7 +73,7 @@ export default function BoardCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={onToggleVisibility}>
-                    {board.visibility === "private"
+                    {board.visibility === "PRIVATE"
                       ? "Make Public"
                       : "Make Private"}
                   </DropdownMenuItem>

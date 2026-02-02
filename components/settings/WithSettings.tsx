@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 
 import { Theme } from "@/features";
-import { recordCount } from "@/features/records/recordSlice";
+import { recordCount } from "@/features/cards/store/slice";
 import { normalizedBoardsSelector } from "@/features/stores";
 import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
 

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { selectBoardsList } from "@/features/lists/listSlice";
+import { selectBoardsList } from "@/features/lists/store/slice";
 
 const useBoardLists = () => {
   const boardSelector = useMemo(() => {

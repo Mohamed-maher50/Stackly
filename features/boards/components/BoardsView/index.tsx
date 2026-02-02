@@ -1,11 +1,11 @@
 import * as motion from "motion/react-client";
 
-import { Board } from "../../types";
+import { IBoard } from "../../types";
 import WithBoardCard from "../boardCard/WithBoardCard";
 
 interface BoardsViewProps {
-  board: Board[];
-  archivedBoard: Board[];
+  board: IBoard[];
+  archivedBoard: IBoard[];
   onSelectBoard?: (boardId: string) => void;
 }
 
@@ -37,14 +37,7 @@ const BoardView = ({
                   transition={{ delay: index * 0.1 }}
                   onClick={() => onSelectBoard?.call(null, board.id)}
                 >
-                  <WithBoardCard
-                    stats={{
-                      completedCards: 1,
-                      overdueCards: 5,
-                      totalCards: 10,
-                    }}
-                    board={board}
-                  />
+                  <WithBoardCard board={board} />
                 </motion.div>
               ))}
             </div>
@@ -60,14 +53,7 @@ const BoardView = ({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 opacity-60">
               {archivedBoard.map((board) => (
                 <motion.div key={board.id} whileHover={{ y: -2 }}>
-                  <WithBoardCard
-                    stats={{
-                      completedCards: 1,
-                      overdueCards: 5,
-                      totalCards: 10,
-                    }}
-                    board={board}
-                  />
+                  <WithBoardCard board={board} />
                 </motion.div>
               ))}
             </div>
