@@ -120,3 +120,10 @@ export const normalizedBoardsSelector = createSelector(
     );
   },
 );
+
+export const cardsNumberSelector = createSelector([boardsInput], (boards) => {
+  return boards.reduce((state, board) => {
+    state += board._count.cards;
+    return state;
+  }, 0);
+});
