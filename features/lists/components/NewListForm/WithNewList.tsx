@@ -3,7 +3,7 @@ import { useState } from "react";
 import { currentBoard } from "@/features/stores";
 import { useAppDispatch, useAppSelector } from "@/lib/App.hooks";
 
-import { insertList } from "../../listSlice";
+import { createListThunk } from "../../store/thunks.api";
 import { NewList } from "./NewList";
 
 interface WithNewListProps {
@@ -18,7 +18,7 @@ export default function WithNewList({ onInsert }: WithNewListProps) {
   const handleCreateList = () => {
     if (!newListTitle.trim() || !board) return;
     dispatch(
-      insertList({
+      createListThunk({
         boardId: board.id,
         title: newListTitle,
       }),

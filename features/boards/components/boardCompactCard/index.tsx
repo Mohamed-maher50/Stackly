@@ -1,9 +1,9 @@
 import * as motion from "motion/react-client";
 
-import { Board } from "../../types";
+import { IBoard } from "../../types";
 
 interface CompactBoardCardProps {
-  board: Pick<Board, "id" | "title">;
+  board: IBoard;
   isActive: boolean;
   cardCount: number;
   onClick: (boardId: string) => void;
@@ -12,7 +12,6 @@ interface CompactBoardCardProps {
 export default function CompactBoardCard({
   board,
   isActive,
-  cardCount,
   onClick,
 }: CompactBoardCardProps) {
   return (
@@ -28,7 +27,7 @@ export default function CompactBoardCard({
     >
       <div className="truncate font-medium text-sm">{board.title}</div>
       <div className="text-xs text-muted-foreground truncate">
-        {cardCount} Lists
+        {board._count.lists} Lists
       </div>
     </motion.button>
   );

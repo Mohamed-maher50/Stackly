@@ -3,14 +3,15 @@ import { useState } from "react";
 
 import { useAppDispatch } from "@/lib/App.hooks";
 
-import { updateList } from "../listSlice";
+import { updateListThunk } from "../store/thunks.api";
+import { IList } from "../types";
 
 interface WithRenameListProps {
   initialTitle: string;
-  listId: string;
+  list: IList;
 }
 
-const WithRenameList = ({ initialTitle, listId }: WithRenameListProps) => {
+const WithRenameList = ({ initialTitle, list }: WithRenameListProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState(initialTitle);
 
@@ -19,8 +20,9 @@ const WithRenameList = ({ initialTitle, listId }: WithRenameListProps) => {
   const handleSaveTitle = () => {
     if (editedTitle.trim()) {
       dispatch(
-        updateList({
-          id: listId,
+        updateListThunk({
+          id: list.id,
+          boardId: list.boardId,
           title: editedTitle,
         }),
       );

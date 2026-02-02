@@ -54,10 +54,7 @@ export default function ListCard(props: ListColumnProps) {
             />
           </motion.button>
 
-          <WithRenameList
-            listId={props.list.id}
-            initialTitle={props.list.title}
-          />
+          <WithRenameList list={props.list} initialTitle={props.list.title} />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -109,11 +106,11 @@ export default function ListCard(props: ListColumnProps) {
           className="flex-1 overflow-y-auto p-3 space-y-2"
         >
           <WithClientAnimatedPresence>
-            <WithListRecords listId={props.list.id} />
+            <WithListRecords list={props.list} />
           </WithClientAnimatedPresence>
 
           {/* Add Card Button */}
-          <WithNewRecord listId={props.list.id} />
+          <WithNewRecord list={props.list} />
         </motion.div>
       )}
     </motion.div>

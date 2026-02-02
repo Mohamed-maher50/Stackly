@@ -13,22 +13,25 @@ datasource db {
 
 // ====== Boards ======
 model Board {
-  id          String          @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  lists       List[]
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  visibility  BoardVisibility @default(PUBLIC)
-  archived    Boolean         @default(false)
-  color       BoardColor?
-  stats       BoardStats?
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  lists           List[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  visibility      BoardVisibility @default(PUBLIC)
+  archived        Boolean         @default(false)
+  color           BoardColor
+  stats           BoardStats?
+  cards           Card[]
+  total_cards     Int             @default(0)
+  completed_cards Int             @default(1)
+  isDeleted       Boolean         @default(false)
 }
 
 type BoardStats {
   totalCards     Int @default(0)
   completedCards Int @default(0)
-  overdueCards   Int @default(0)
 }
 
 type BoardColor {
@@ -56,7 +59,8 @@ model List {
   accentColor String
   wipLimit    Int?
   archived    Boolean  @default(false)
-  order       Int
+  deleted     Boolean? @default(false)
+  // order       Int
   boardId     String   @db.ObjectId
   board       Board    @relation(fields: [boardId], references: [id])
   cards       Card[]
@@ -67,10 +71,10 @@ model List {
 model Card {
   id          String          @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  description String
+  description String?
   labels      Label[]
   dueDate     DateTime?
-  priority    String
+  priority    Priority        @default(MEDIUM)
   attachments Attachment[]
   checklists  ChecklistItem[]
   comments    Comment[]
@@ -79,6 +83,8 @@ model Card {
   done        Boolean         @default(false)
   listId      String          @db.ObjectId
   list        List            @relation(fields: [listId], references: [id])
+  boardId     String          @db.ObjectId
+  board       Board           @relation(fields: [boardId], references: [id])
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 }
@@ -103,15 +109,14 @@ type ChecklistItem {
 }
 
 type Comment {
-  id        String
-  authorId  String
-  content   String
-  createdAt DateTime
+  user      String
+  text      String
+  createdAt DateTime @default(now())
 }
 
 type ActivityLog {
-  id        String
   action    String
-  userId    String
-  createdAt DateTime
+  user      String
+  details   String
+  createdAt DateTime @default(now())
 }

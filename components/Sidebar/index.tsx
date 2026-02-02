@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/sidebar";
 import WithCompactBoard from "@/features/boards/components/boardCompactCard/WithCompactBoard";
 import WithCreateBoard from "@/features/boards/components/WithCreateBoard";
-import { CompactBoard } from "@/features/boards/types";
+import { IBoard } from "@/features/boards/types";
 
 interface SidebarProps {
   currentPage: string;
-  boards: CompactBoard[];
+  boards: IBoard[];
   activeBoardId?: string;
 }
 

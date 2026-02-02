@@ -3,13 +3,13 @@ import * as motion from "motion/react-client";
 import type { MouseEvent } from "react";
 import { memo } from "react";
 
+import { ICard } from "@/features/cards/types";
 import { cn } from "@/lib/utils";
 
-import { PRIORITY_COLORS } from "../../constants";
-import { IRecord } from "../../types";
+import { PRIORITY_COLORS } from "../../../lists/constants";
 
 interface CardItemProps {
-  card: IRecord;
+  card: ICard;
   onDoneToggle?: (done: boolean) => void;
   onClick?: () => void;
 }
@@ -92,7 +92,7 @@ export default memo(function RecordList({
         )}
 
         {/* Priority Badge */}
-        {card.priority !== "medium" && (
+        {card.priority !== "MEDIUM" && (
           <div className="ml-7">
             <span
               className={cn(
@@ -114,7 +114,7 @@ export default memo(function RecordList({
           )}
           {card.checklists.length > 0 && (
             <span className="flex items-center gap-1">
-              ✓ {card.checklists.filter((c) => c.completed).length}/
+              ✓ {card.checklists.filter((c) => c.done).length}/
               {card.checklists.length}
             </span>
           )}

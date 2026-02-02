@@ -2,13 +2,13 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/lib/App.store";
 
-import { Board } from "./types";
-import { initialBoard } from "./utils";
+import { IBoard } from "../types";
+import { extraReducers } from "./extraReducers";
 
 export interface initialState {
-  boards: Board[];
+  boards: IBoard[];
   activeBoardIndex: number | null;
-  activeBoard: Board | null;
+  activeBoard: IBoard | null;
   status: "idle" | "loading" | "failed";
 }
 
@@ -18,15 +18,17 @@ const initialState: initialState = {
   activeBoard: null,
   activeBoardIndex: null,
 };
+export type boardState = initialState;
+
 export const boardSlice = createSlice({
   name: "boardStore",
   initialState: initialState,
   reducers: {
     // -------------------------------------------- board title
-    insertBoard: (state, { payload }: PayloadAction<string>) => {
-      const newBoard = { ...initialBoard(), title: payload };
-      state.boards.push(newBoard);
-    },
+    // insertBoard: (state, { payload }: PayloadAction<string>) => {
+    //   const newBoard = { ...initialBoard(), title: payload };
+    //   state.boards.push(newBoard);
+    // },
     ///--------------------------------------------- string is boardId
     toggleArchiveBoard: (state, { payload }: PayloadAction<string>) => {
       state.boards = state.boards.map((board) => {
@@ -38,7 +40,7 @@ export const boardSlice = createSlice({
     },
     updateBoard: (
       state,
-      { payload }: PayloadAction<Partial<Board> & { id: string }>,
+      { payload }: PayloadAction<Partial<IBoard> & { id: string }>,
     ) => {
       const boardIndex = state.boards.findIndex(
         (board) => board.id === payload.id,
@@ -62,11 +64,11 @@ export const boardSlice = createSlice({
       state.activeBoardIndex = boardIndex;
       state.activeBoard = state.boards[boardIndex];
     },
-    removeBoard: (state, { payload }: PayloadAction<Board>) => {
+    removeBoard: (state, { payload }: PayloadAction<IBoard>) => {
       state.boards = state.boards.filter((b) => b.id != payload.id);
     },
   },
-
+  extraReducers: extraReducers,
   selectors: {
     findBoards: (state) => {
       return state.boards;
@@ -80,7 +82,7 @@ export const { findBoards, currentBoard } = boardSlice.selectors;
 //----------------------------------------------- actions
 export const {
   toggleArchiveBoard,
-  insertBoard,
+  // insertBoard,
   updateBoard,
   updateActiveBoard,
   removeBoard,
@@ -103,8 +105,8 @@ export const normalizedBoardsSelector = createSelector(
   [boardsInput],
   (boards) => {
     return boards.reduce<{
-      archived: Board[];
-      active: Board[];
+      archived: IBoard[];
+      active: IBoard[];
     }>(
       (state, board) => {
         if (board.archived) state.archived.push(board);

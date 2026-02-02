@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 
 export type ApiResponse<T = unknown> = {
   success: boolean;
-  data?: T;
+  data: T;
   error?: string;
   errors?: Record<string, string[]>;
 };

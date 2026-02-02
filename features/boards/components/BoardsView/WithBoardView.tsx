@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/lib/App.hooks";
 
-import { normalizedBoardsSelector } from "../../boardSlice";
+import { normalizedBoardsSelector } from "../../store/slice";
 import BoardView from ".";
 
 const WithBoardView = () => {
